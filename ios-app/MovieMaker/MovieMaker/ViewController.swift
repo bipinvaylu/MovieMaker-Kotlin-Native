@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import KotlinMovieMaker
 
 class ViewController: UIViewController {
 
