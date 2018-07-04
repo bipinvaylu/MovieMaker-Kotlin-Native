@@ -13,7 +13,7 @@ group 'com.bipin.moviemaker'
 
 apply plugin: 'konan'
 
-konan.targets = ['iphone', 'iphone_sim']
+konan.targets = ['iphone_sim']
 
 konanArtifacts {
     framework('KotlinMovieMaker') {
