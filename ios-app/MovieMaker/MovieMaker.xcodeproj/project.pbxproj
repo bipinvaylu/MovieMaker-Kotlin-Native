@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B910AB120EE65FA00451558 /* KotlinMovieMaker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B910AB020EE65F900451558 /* KotlinMovieMaker.framework */; };
+		8B910AB220EE65FA00451558 /* KotlinMovieMaker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8B910AB020EE65F900451558 /* KotlinMovieMaker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8BB9D45D20ED7ABC003ADB9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB9D45C20ED7ABC003ADB9C /* AppDelegate.swift */; };
 		8BB9D45F20ED7ABC003ADB9C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB9D45E20ED7ABC003ADB9C /* ViewController.swift */; };
 		8BB9D46220ED7ABC003ADB9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BB9D46020ED7ABC003ADB9C /* Main.storyboard */; };
@@ -22,6 +24,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8B910AB220EE65FA00451558 /* KotlinMovieMaker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -29,6 +32,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8B910AB020EE65F900451558 /* KotlinMovieMaker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KotlinMovieMaker.framework; path = ../../ios/build/konan/bin/ios_x64/KotlinMovieMaker.framework; sourceTree = "<group>"; };
 		8BB9D45920ED7ABC003ADB9C /* MovieMaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieMaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BB9D45C20ED7ABC003ADB9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8BB9D45E20ED7ABC003ADB9C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -44,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B910AB120EE65FA00451558 /* KotlinMovieMaker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +58,7 @@
 		8BB9D45020ED7ABC003ADB9C = {
 			isa = PBXGroup;
 			children = (
+				8B910AB020EE65F900451558 /* KotlinMovieMaker.framework */,
 				8BB9D45B20ED7ABC003ADB9C /* MovieMaker */,
 				8BB9D45A20ED7ABC003ADB9C /* Products */,
 				8BB9D47120ED7AE2003ADB9C /* Frameworks */,
@@ -301,6 +307,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../../ios/**";
 				INFOPLIST_FILE = MovieMaker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bipin.MovieMaker;
@@ -315,6 +322,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../../ios/**";
 				INFOPLIST_FILE = MovieMaker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bipin.MovieMaker;
