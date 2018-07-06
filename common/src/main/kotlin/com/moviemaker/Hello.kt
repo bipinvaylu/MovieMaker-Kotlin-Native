@@ -1,4 +1,4 @@
-package com.bipin.moviemaker
+package com.moviemaker
 
 expect open class Hello {
     fun get(): String

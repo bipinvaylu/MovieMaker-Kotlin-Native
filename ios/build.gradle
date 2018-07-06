@@ -9,7 +9,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:0.7"
     }
 }
-group 'com.bipin.moviemaker'
+group 'com.moviemaker'
 
 apply plugin: 'konan'
 

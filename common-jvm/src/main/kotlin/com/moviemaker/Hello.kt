@@ -1,4 +1,4 @@
-package com.bipin.moviemaker
+package com.moviemaker
 
 actual open class Hello {
     actual fun get(): String {
