@@ -5,6 +5,4 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
 
-    implementation project(":common:domain")
-    implementation project(":common:app")
 }
