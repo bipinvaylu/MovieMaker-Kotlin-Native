@@ -7,7 +7,7 @@ dependencies {
     implementation project(":common:app")
 
     implementation libraries.kotlin.common
-    
+
     testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
 }

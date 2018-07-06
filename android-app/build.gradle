@@ -38,4 +38,5 @@ dependencies {
 
     implementation libraries.kotlin.stdlib
     implementation libraries.androidSupport.appCompat
+
 }
