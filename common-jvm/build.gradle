@@ -3,6 +3,7 @@ apply plugin: 'kotlin-platform-jvm'
 
 dependencies {
     expectedBy project(":common")
+    implementation project(":common:domain")
 
     implementation libraries.kotlin.jdk8
 

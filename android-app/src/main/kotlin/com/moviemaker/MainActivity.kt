@@ -2,9 +2,8 @@ package com.moviemaker
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.EditText
 import android.widget.TextView
-import com.moviemaker.R;
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,6 +13,9 @@ class MainActivity : AppCompatActivity() {
 
         val helloTextView = findViewById<TextView>(R.id.hello_txt)
         helloTextView.text = Hello().get()
+
+        val image = Media.Image("PATH", "THMPath", Date().time, 12345)
+        helloTextView.text = image.toString()
     }
 
 }
