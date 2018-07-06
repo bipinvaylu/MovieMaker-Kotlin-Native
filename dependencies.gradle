@@ -97,6 +97,8 @@ ext {
                             rx2    : "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$versions.kotlinCoroutines"
                     ],
                     stdlib    : "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin",
+                    jdk8      : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
+                    common    : "org.jetbrains.kotlin:kotlin-stdlib-common:$versions.kotlin",
             ],
             kotterKnife            : "com.jakewharton:kotterknife:$versions.kotterKnife",
             materialValues         : "blue.aodev:material-values:$versions.materialValues",
