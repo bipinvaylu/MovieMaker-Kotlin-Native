@@ -1,5 +1,7 @@
 
 include 'common'
+include 'common:domain'
 include 'common-jvm'
 include 'common-ios'
 include 'android-app'
+
