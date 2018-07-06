@@ -1,3 +1,4 @@
+apply from: "$rootDir/dependencies.gradle"
 apply plugin: 'kotlin-platform-common'
 
 dependencies {

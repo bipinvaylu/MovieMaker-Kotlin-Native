@@ -1,3 +1,8 @@
+apply from: "$rootDir/dependencies.gradle"
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-platform-android'
+
 buildscript {
     ext.kotlin_version = '1.2.50'
 
@@ -10,9 +15,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-platform-android'
 
 android {
     compileSdkVersion 27
