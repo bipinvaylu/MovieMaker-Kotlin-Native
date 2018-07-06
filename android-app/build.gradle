@@ -34,7 +34,8 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(":common-jvm")
-    implementation "com.android.support:appcompat-v7:27.1.1"
+
+    implementation libraries.kotlin.stdlib
+    implementation libraries.androidSupport.appCompat
 }
