@@ -23,5 +23,5 @@ konanArtifacts {
 
 
 dependencies {
-    expectedBy project(':common')
+    expectedBy project(":common:domain")
 }

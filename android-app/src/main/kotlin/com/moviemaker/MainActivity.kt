@@ -3,6 +3,7 @@ package com.moviemaker
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
+import com.moviemaker.domain.Media
 import java.util.Date
 
 class MainActivity : AppCompatActivity() {

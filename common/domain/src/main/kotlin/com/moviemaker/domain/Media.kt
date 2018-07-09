@@ -1,4 +1,4 @@
-package com.moviemaker
+package com.moviemaker.domain
 
 sealed class Media {
 
