@@ -14,7 +14,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        print("\(KMMHello().get())")
+        let timeInMillis: Int64 =
+            Int64((NSDate().timeIntervalSince1970 * 1000.0).rounded())
+        let media = KMMMediaImage(path: "PATH", thmPath: "THMPath", createdDate: timeInMillis, fileSize: 12345)
+        print("\(media)")
     }
 
     override func didReceiveMemoryWarning() {
