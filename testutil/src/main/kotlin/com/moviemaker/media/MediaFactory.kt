@@ -7,11 +7,11 @@ class MediaFactory {
 
     val fairy = Fairy.create()
 
-    val baseProducer = fairy.baseProducer()
-    val dateProducer = fairy.dateProducer()
-    val textProducer = fairy.textProducer()
+    private val baseProducer = fairy.baseProducer()
+    private val dateProducer = fairy.dateProducer()
+    private val textProducer = fairy.textProducer()
 
-    fun media() : Media.Image {
+    private fun media() : Media.Image {
         val createdDate = dateProducer.randomDateInThePast(1).millisOfSecond * 1000L
         return Media.Image(
             path = textProducer.sentence(),
