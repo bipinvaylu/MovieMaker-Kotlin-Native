@@ -1,9 +1,9 @@
-package com.moviemaker.media
+package com.moviemaker.factroy
 
 import com.moviemaker.domain.Media
 import io.codearte.jfairy.Fairy
 
-class MediaFactory {
+open class MediaFactory {
 
     val fairy = Fairy.create()
 
