@@ -1,0 +1,17 @@
+apply from: "$rootDir/dependencies.gradle"
+
+apply plugin: 'kotlin'
+
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
+
+dependencies {
+    implementation project(':common:domain')
+
+    implementation libraries.jFairy
+    implementation libraries.kotlin.stdlib
+    implementation libraries.rxKotlin
+    implementation libraries.spekApi
+    implementation libraries.spekJUnitPlatformEngine
+    implementation libraries.threeTenABP
+}

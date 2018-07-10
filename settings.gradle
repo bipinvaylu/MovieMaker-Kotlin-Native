@@ -6,4 +6,5 @@ include 'common:view'
 include 'common-jvm'
 include 'common-ios'
 include 'android-app'
+include 'testutil'
 
