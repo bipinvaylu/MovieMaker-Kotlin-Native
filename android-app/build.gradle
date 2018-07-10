@@ -41,8 +41,17 @@ dependencies {
     implementation libraries.kotlin.stdlib
     implementation libraries.androidSupport.appCompat
     implementation libraries.timber
+    implementation libraries.androidSupport.constraintLayout
+    implementation libraries.androidSupport.design
+
 
     testImplementation project(':testutils')
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.android.support:design:27.1.1'
+    testImplementation libraries.jUnit
+    testImplementation libraries.jUnitPlatformRunner
+    testImplementation libraries.mockito
+    testImplementation libraries.mockitoKotlin
+    testImplementation libraries.spekApi
+    testImplementation libraries.spekJUnitPlatformEngine
+    testImplementation libraries.truth
+
 }
