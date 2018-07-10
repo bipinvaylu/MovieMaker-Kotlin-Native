@@ -44,14 +44,13 @@ dependencies {
     implementation libraries.androidSupport.constraintLayout
     implementation libraries.androidSupport.design
 
-
-    testImplementation project(':testutils')
-    testImplementation libraries.jUnit
-    testImplementation libraries.jUnitPlatformRunner
-    testImplementation libraries.mockito
-    testImplementation libraries.mockitoKotlin
-    testImplementation libraries.spekApi
-    testImplementation libraries.spekJUnitPlatformEngine
-    testImplementation libraries.truth
+//    testImplementation project(':testutils')
+//    testImplementation libraries.jUnit
+//    testImplementation libraries.jUnitPlatformRunner
+//    testImplementation libraries.mockito
+//    testImplementation libraries.mockitoKotlin
+//    testImplementation libraries.spekApi
+//    testImplementation libraries.spekJUnitPlatformEngine
+//    testImplementation libraries.truth
 
 }

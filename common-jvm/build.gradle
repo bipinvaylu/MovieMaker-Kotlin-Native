@@ -7,7 +7,8 @@ dependencies {
 
     implementation libraries.kotlin.jdk8
 
-    testCompile "junit:junit:4.12"
+    testImplementation project(':testutils')
+//    testCompile "junit:junit:4.12"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
 

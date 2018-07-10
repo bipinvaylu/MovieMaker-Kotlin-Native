@@ -3,9 +3,9 @@ package com.moviemaker.factroy
 import com.moviemaker.domain.Media
 import io.codearte.jfairy.Fairy
 
-open class MediaFactory {
+object MediaFactory {
 
-    val fairy = Fairy.create()
+    private val fairy = Fairy.create()
 
     private val baseProducer = fairy.baseProducer()
     private val dateProducer = fairy.dateProducer()
