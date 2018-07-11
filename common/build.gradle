@@ -2,9 +2,10 @@ apply from: "$rootDir/dependencies.gradle"
 
 apply plugin: 'kotlin-platform-common'
 
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
+
 dependencies {
-//    implementation project(":common:domain")
-//    implementation project(":common:app")
 
     implementation libraries.kotlin.common
     implementation libraries.kotlin.stdlib

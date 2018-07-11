@@ -1,8 +1,8 @@
 
 include 'common'
-include 'common:domain'
-include 'common:app'
-include 'common:view'
+//include 'common:domain'
+//include 'common:app'
+//include 'common:view'
 //include 'testutils'
 include 'common-jvm'
 include 'common-ios'

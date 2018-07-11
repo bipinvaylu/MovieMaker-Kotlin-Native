@@ -2,8 +2,9 @@ apply from: "$rootDir/dependencies.gradle"
 apply plugin: 'kotlin-platform-jvm'
 
 dependencies {
-    expectedBy project(":common:domain")
-    expectedBy project(":common:app")
+    expectedBy project(":common")
+//    expectedBy project(":common:domain")
+//    expectedBy project(":common:app")
 //    implementation project(':testutils')
 
     implementation libraries.kotlin.jdk8
