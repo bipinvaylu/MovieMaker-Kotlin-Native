@@ -2,8 +2,8 @@ package com.moviemaker.factory
 
 import com.moviemaker.domain.Media
 
-actual open class LocalMediaDataSource {
-    actual open fun getMediaList(onComplete: (List<Media>) -> Unit) {
-        onComplete(MediaFactory.mediaList())
+actual class LocalMediaDataSource {
+    actual fun getMediaList(): List<Media> {
+        return listOf()
     }
 }

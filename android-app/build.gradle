@@ -49,8 +49,6 @@ dependencies {
     implementation libraries.timber
     implementation libraries.androidSupport.constraintLayout
     implementation libraries.androidSupport.design
-    implementation libraries.moshi.core
-    implementation libraries.moshi.adapters
 
 //    testImplementation project(':testutils')
 //    testImplementation libraries.jUnit

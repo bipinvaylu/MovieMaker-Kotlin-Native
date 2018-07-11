@@ -7,7 +7,7 @@ class Prefs(context: Context) {
     private val prefs = context.getSharedPreferences(PREF_FILENAME, 0)
 
     private val MEDIA_LIST = "media_list"
-    var mediaList: String
+    var savedMedia: String
         get() = prefs.getString(MEDIA_LIST, "")
         set(value) = prefs.edit().putString(MEDIA_LIST, value).apply()
 
