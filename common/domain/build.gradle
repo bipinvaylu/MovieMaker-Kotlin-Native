@@ -6,6 +6,7 @@ targetCompatibility = JavaVersion.VERSION_1_6
 dependencies {
     implementation libraries.kotlin.common
     implementation libraries.kotlin.stdlib
+    implementation libraries.jFairy
     testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
 }

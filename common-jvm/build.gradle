@@ -4,10 +4,10 @@ apply plugin: 'kotlin-platform-jvm'
 dependencies {
     expectedBy project(":common:domain")
     expectedBy project(":common:app")
+//    implementation project(':testutils')
 
     implementation libraries.kotlin.jdk8
 
-    testImplementation project(':testutils')
 //    testCompile "junit:junit:4.12"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"

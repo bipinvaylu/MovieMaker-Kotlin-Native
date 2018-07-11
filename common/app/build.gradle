@@ -5,10 +5,10 @@ apply plugin: 'kotlin-platform-common'
 dependencies {
     implementation project(":common:domain")
 
-    implementation libraries.javaxInject
+//    implementation libraries.javaxInject
     implementation libraries.kotlin.common
     implementation libraries.kotlin.stdlib
-    implementation libraries.rxKotlin
+//    implementation libraries.rxKotlin
 
     testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
