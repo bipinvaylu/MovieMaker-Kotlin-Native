@@ -5,6 +5,12 @@ apply plugin: 'kotlin-platform-android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
 buildscript {
     ext.kotlin_version = '1.2.50'
 
@@ -36,13 +42,15 @@ repositories {
 }
 
 dependencies {
-    implementation project(":common-jvm")
+    implementation project(":common-android")
 
     implementation libraries.kotlin.stdlib
     implementation libraries.androidSupport.appCompat
     implementation libraries.timber
     implementation libraries.androidSupport.constraintLayout
     implementation libraries.androidSupport.design
+    implementation libraries.moshi.core
+    implementation libraries.moshi.adapters
 
 //    testImplementation project(':testutils')
 //    testImplementation libraries.jUnit

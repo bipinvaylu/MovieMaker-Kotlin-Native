@@ -1,4 +1,4 @@
-package com.moviemaker.datasource
+package com.moviemaker.factory
 
 import com.moviemaker.domain.Media
 

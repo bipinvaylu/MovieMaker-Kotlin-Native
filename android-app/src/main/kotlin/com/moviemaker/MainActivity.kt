@@ -15,7 +15,7 @@ import com.moviemaker.datasource.LocalMediaDataSource
 import com.moviemaker.domain.Media
 import com.moviemaker.interactor.GetMediaList
 import timber.log.Timber
-import java.util.Date
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {

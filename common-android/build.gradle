@@ -1,0 +1,33 @@
+apply from: "$rootDir/dependencies.gradle"
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-platform-android'
+apply plugin: 'kotlin-android-extensions'
+
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0.0"
+    }
+    buildTypes {
+        release
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    expectedBy project(":common")
+
+    implementation libraries.kotlin.stdlib
+    implementation libraries.timber
+    implementation libraries.moshi.core
+    implementation libraries.moshi.adapters
+}

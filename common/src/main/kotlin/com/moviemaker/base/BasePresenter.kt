@@ -7,7 +7,7 @@ abstract class BasePresenter<V : BaseView> {
 
 
     fun attach(view: V) {
-        this.view
+        this.view = view
         onViewAttached()
     }
 

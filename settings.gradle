@@ -4,7 +4,7 @@ include 'common'
 //include 'common:app'
 //include 'common:view'
 //include 'testutils'
-include 'common-jvm'
+include 'common-android'
 include 'common-ios'
 include 'android-app'
 
