@@ -30,4 +30,5 @@ dependencies {
     implementation libraries.timber
     implementation libraries.moshi.core
     implementation libraries.moshi.adapters
+    implementation libraries.multiplatformSettings.android
 }

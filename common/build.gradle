@@ -9,6 +9,10 @@ dependencies {
 
     implementation libraries.kotlin.common
     implementation libraries.kotlin.stdlib
+    implementation libraries.multiplatformSettings.common
+
+
+
     testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
 }

@@ -1,7 +1,8 @@
 package com.moviemaker
 
 import android.app.Application
-import com.moviemaker.utils.Prefs
+import com.moviemaker.settings.SettingsRepository
+import com.moviemaker.utils.settingsRepository
 
 class App : Application() {
 
@@ -14,8 +15,8 @@ class App : Application() {
         private lateinit var instance: App
 
         //TODO: Use dagger module
-        val prefs: Prefs by lazy {
-            Prefs(instance)
+        val settingsRepo: SettingsRepository by lazy {
+            settingsRepository(instance)
         }
     }
 }

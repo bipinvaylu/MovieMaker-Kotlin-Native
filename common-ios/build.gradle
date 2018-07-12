@@ -1,3 +1,5 @@
+apply from: "$rootDir/dependencies.gradle"
+
 buildscript {
     repositories {
         mavenCentral()
@@ -13,11 +15,24 @@ group 'com.moviemaker'
 
 apply plugin: 'konan'
 
-konan.targets = ['iphone_sim']
 
 konanArtifacts {
-    framework('KotlinMovieMaker') {
+    //physical device
+    framework('KotlinMovieMaker_ios_phone', targets: ['ios_arm64']) {
         enableMultiplatform true
+        artifactName 'KotlinMovieMaker'
+        dependencies {
+            artifactMyKotlinFramework_ios_arm64 libraries.multiplatformSettings.iosArm64
+        }
+    }
+
+    //simulator
+    framework('KotlinMovieMaker_ios_simulator', targets: ['ios_x64']) {
+        enableMultiplatform true
+        artifactName 'KotlinMovieMaker'
+        dependencies {
+            artifactMyKotlinFramework_ios_x64 libraries.multiplatformSettings.iosX64
+        }
     }
 }
 

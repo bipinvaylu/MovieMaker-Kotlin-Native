@@ -15,7 +15,7 @@ import com.moviemaker.datasource.LocalMediaDataSource
 import com.moviemaker.domain.Media
 import com.moviemaker.interactor.GetMediaList
 import timber.log.Timber
-import java.util.*
+import java.util.Date
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(chooser, 1)
         }
 
-        val getMediaList = GetMediaList(LocalMediaDataSource())
+        val getMediaList = GetMediaList(LocalMediaDataSource(App.settingsRepo))
         getMediaList.execute {
             it.mapIndexed { index: Int, media: Media ->
                 Timber.d("Bipin - Index: $index, Media: $media")
