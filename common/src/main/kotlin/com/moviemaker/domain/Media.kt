@@ -11,7 +11,7 @@ sealed class Media {
 
 
     abstract val path: String
-    abstract val thmPath: String
+//    abstract val thmPath: String
     abstract val createdDate: Long
     abstract val fileSize: Long
 
@@ -22,11 +22,11 @@ sealed class Media {
 
     abstract fun withPath(path: String): Media
 
-    abstract fun withThmPath(thmPath: String): Media
+//    abstract fun withThmPath(thmPath: String): Media
 
     data class Image(
         override val path: String,
-        override val thmPath: String,
+//        override val thmPath: String,
         override val createdDate: Long,
         override val fileSize: Long
     ) : Media() {
@@ -35,9 +35,9 @@ sealed class Media {
             return copy(path = path)
         }
 
-        override fun withThmPath(thmPath: String): Media {
-            return copy(thmPath = thmPath)
-        }
+//        override fun withThmPath(thmPath: String): Media {
+//            return copy(thmPath = thmPath)
+//        }
 
     }
 

@@ -1,6 +1,7 @@
 package com.moviemaker.ui.media
 
 import android.content.Context
+import android.net.Uri
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -29,7 +30,7 @@ class MediaItemView : FrameLayout {
 
     // public functions
     fun bind(media: Media) {
-        // TODO: Set image using picasso
+        imageView.setImageURI(Uri.parse(media.path))
     }
 
     // Model

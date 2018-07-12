@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Movie Maker</string>
+
+
+    <string name="choose_picture">Choose picture</string>
 </resources>

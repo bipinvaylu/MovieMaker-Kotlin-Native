@@ -1,8 +1,7 @@
 package com.moviemaker.factory
 
 import com.moviemaker.domain.Media
-import java.util.Date
-import java.util.Random
+import java.util.*
 
 object MediaFactory {
 
@@ -14,13 +13,13 @@ object MediaFactory {
 
     private fun media(
         path: String,
-        thmPath: String,
+//        thmPath: String,
         createdDate: Long,
         fileSize: Long
     ): Media.Image {
         return Media.Image(
             path,
-            thmPath,
+//            thmPath,
             createdDate,
             fileSize
         )
@@ -32,7 +31,7 @@ object MediaFactory {
         return (0..listSize).map {
             media(
                 path = RandomString.generateRandomString(),
-                thmPath = RandomString.generateRandomString(),
+//                thmPath = RandomString.generateRandomString(),
                 createdDate = Date().time - Random().nextLong(),
                 fileSize = Random().nextLong()
             )

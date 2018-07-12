@@ -1,81 +1,74 @@
 package com.moviemaker
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ImageView.ScaleType.FIT_CENTER
-import android.widget.LinearLayout
-import com.moviemaker.datasource.LocalMediaDataSource
 import com.moviemaker.domain.Media
-import com.moviemaker.interactor.GetMediaList
-import timber.log.Timber
-import java.util.Date
+import com.moviemaker.extension.showImageChooser
+import com.moviemaker.ui.media.MediaGridView
+import kotterknife.bindView
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private var imageContainer: LinearLayout? = null
+    // private members
+
+    // views
+    private val mediaGridView: MediaGridView by bindView(R.id.media_grid_view)
+    private val addImageButton: FloatingActionButton by bindView(R.id.add_image_button)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Timber.plant(Timber.DebugTree())
+
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.setTitle(R.string.app_name)
 
-        imageContainer = findViewById(R.id.imageContainer)
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener { _ ->
-            val pickPhoto = Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            )
-            val chooser = Intent.createChooser(pickPhoto, "Choose a Picture")
-            startActivityForResult(chooser, 1)
+        addImageButton.setOnClickListener { _ ->
+            showImageChooser(IMAGE_CHOOSER_REQUEST_CODE)
         }
 
-        val getMediaList = GetMediaList(LocalMediaDataSource(App.settingsRepo))
-        getMediaList.execute {
-            it.mapIndexed { index: Int, media: Media ->
-                Timber.d("Bipin - Index: $index, Media: $media")
-            }
-        }
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == IMAGE_CHOOSER_REQUEST_CODE
+                && resultCode == Activity.RESULT_OK) {
             val selectedImageUri = data.data
-            val imageView = ImageView(this)
-            imageView.scaleType = FIT_CENTER
-            imageView.setImageURI(selectedImageUri)
-
-            val layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            imageContainer?.setPadding(2,2,2,2)
-            imageContainer?.addView(imageView, layoutParams)
             val media = getImageDetails(selectedImageUri)
-            Timber.d("Bipin - Media: $media")
+            mediaGridView.addMedia(media)
         }
     }
 
     fun getImageDetails(contentUri: Uri): Media.Image {
-        // TODO: Find few more detail form Uri
+        var fileSize = 0
+        if (contentUri.scheme == ContentResolver.SCHEME_CONTENT) {
+            try {
+                val fileInputStream = applicationContext?.contentResolver
+                        ?.openInputStream(contentUri)
+                fileSize = fileInputStream?.available() ?: 0
+            } catch (e: Exception) {
+               e.printStackTrace()
+            }
+        }
         return Media.Image(
-            contentUri.path,
-            contentUri.encodedPath,
-            Date().time,
-            0
-        )
+                contentUri.path,
+                Date().time,
+                fileSize.toLong()
+                )
     }
+
+    companion object {
+        const val IMAGE_CHOOSER_REQUEST_CODE = 1
+    }
+
 }

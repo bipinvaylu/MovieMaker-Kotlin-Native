@@ -6,10 +6,12 @@ import android.support.constraint.Group
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.view.View
 import android.widget.ProgressBar
 import com.moviemaker.App
 import com.moviemaker.R
 import com.moviemaker.datasource.LocalMediaDataSource
+import com.moviemaker.domain.Media
 import com.moviemaker.interactor.GetMediaList
 import com.moviemaker.widget.recyclerview.SpacesItemDecoration
 import kotterknife.bindView
@@ -30,6 +32,10 @@ class MediaGridView : ConstraintLayout {
     // properties
     private val controller: MediaController by lazy {
         MediaController()
+    }
+    private val mediaList = mutableListOf<Media>()
+    private val getMediaList: GetMediaList by lazy {
+        GetMediaList(LocalMediaDataSource(App.settingsRepo))
     }
 
     // constructors
@@ -59,14 +65,33 @@ class MediaGridView : ConstraintLayout {
         recyclerView.layoutManager = layoutManager
         recyclerView.addItemDecoration(SpacesItemDecoration(spacing))
 
-        val getMediaList = GetMediaList(LocalMediaDataSource(App.settingsRepo))
-        getMediaList.execute {
-            controller.media.accept(it)
-        }
+        loadMediaList()
 
     }
 
     // public functions
+    fun loadMediaList() {
+        emptyViewGroup.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        getMediaList.execute {
+            progressBar.visibility = GONE
+            mediaList.clear()
+            mediaList.addAll(it)
+            controller.media.accept(it)
+            if (mediaList.size == 0) {
+                emptyViewGroup.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+            } else {
+                emptyViewGroup.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            }
+        }
+    }
 
+    fun addMedia(media: Media) {
+        mediaList.add(media)
+        App.settingsRepo.savedMedia = App.mediaAdapter.toJson(mediaList.toList())
+        controller.media.accept(mediaList.toList())
+    }
 
 }
