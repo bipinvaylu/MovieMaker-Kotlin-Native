@@ -5,11 +5,6 @@ apply plugin: 'kotlin-platform-android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
 
 buildscript {
     ext.kotlin_version = '1.2.50'
@@ -33,6 +28,10 @@ android {
         versionCode 1
         versionName "1.0.0"
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 repositories {
@@ -44,11 +43,24 @@ repositories {
 dependencies {
     implementation project(":common-android")
 
-    implementation libraries.kotlin.stdlib
     implementation libraries.androidSupport.appCompat
-    implementation libraries.timber
+    implementation libraries.androidSupport.cardView
     implementation libraries.androidSupport.constraintLayout
     implementation libraries.androidSupport.design
+    implementation libraries.androidSupport.recyclerView
+    implementation libraries.epoxy
+    implementation libraries.kotlin.stdlib
+    implementation libraries.kotterKnife
+    implementation libraries.materialValues
+    implementation libraries.picasso
+    implementation libraries.rxAndroid
+    implementation libraries.rxBinding.core
+    implementation libraries.rxBinding.appcompat
+    implementation libraries.rxBinding.design
+    implementation libraries.rxPermissions
+    implementation libraries.rxKotlin
+    implementation libraries.timber
+
 
 //    testImplementation project(':testutils')
 //    testImplementation libraries.jUnit
