@@ -1,6 +1,7 @@
 package com.moviemaker.ui.media
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.AttributeSet
@@ -10,6 +11,7 @@ import com.airbnb.epoxy.EpoxyModel
 import com.moviemaker.R
 import com.moviemaker.domain.Media
 import kotterknife.bindView
+
 
 class MediaItemView : FrameLayout {
 
@@ -32,6 +34,8 @@ class MediaItemView : FrameLayout {
     // public functions
     fun bind(media: Media) {
         val imageUri = Uri.parse(media.path)
+        context.grantUriPermission(context.packageName, imageUri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION)
         val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
         imageView.setImageBitmap(bitmap)
     }

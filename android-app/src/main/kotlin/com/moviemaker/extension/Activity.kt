@@ -10,7 +10,7 @@ fun Activity.showImageChooser(requestCode: Int) {
             ,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
     )
     pickPhoto.type = "image/*"
-//    pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     pickPhoto.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
     val chooser = Intent.createChooser(
             pickPhoto,
