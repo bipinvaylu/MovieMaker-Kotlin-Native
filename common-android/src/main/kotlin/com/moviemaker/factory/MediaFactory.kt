@@ -16,8 +16,8 @@ object MediaFactory {
 //        thmPath: String,
         createdDate: Long,
         fileSize: Long
-    ): Media.Image {
-        return Media.Image(
+    ): Media {
+        return Media(
             path,
 //            thmPath,
             createdDate,

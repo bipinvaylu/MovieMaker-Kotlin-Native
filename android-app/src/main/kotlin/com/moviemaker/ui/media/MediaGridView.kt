@@ -13,8 +13,10 @@ import com.moviemaker.R
 import com.moviemaker.datasource.LocalMediaDataSource
 import com.moviemaker.domain.Media
 import com.moviemaker.interactor.GetMediaList
+import com.moviemaker.utils.mediaListAdapter
 import com.moviemaker.widget.recyclerview.SpacesItemDecoration
 import kotterknife.bindView
+import timber.log.Timber
 
 class MediaGridView : ConstraintLayout {
 
@@ -35,6 +37,7 @@ class MediaGridView : ConstraintLayout {
     }
     private val mediaList = mutableListOf<Media>()
     private val getMediaList: GetMediaList by lazy {
+        Timber.d("Bipin - getMediaList init called")
         GetMediaList(LocalMediaDataSource(App.settingsRepo))
     }
 
@@ -65,8 +68,6 @@ class MediaGridView : ConstraintLayout {
         recyclerView.layoutManager = layoutManager
         recyclerView.addItemDecoration(SpacesItemDecoration(spacing))
 
-        loadMediaList()
-
     }
 
     // public functions
@@ -74,6 +75,7 @@ class MediaGridView : ConstraintLayout {
         emptyViewGroup.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
         getMediaList.execute {
+            Timber.d("Bipin - GetMediaList list: $it")
             progressBar.visibility = GONE
             mediaList.clear()
             mediaList.addAll(it)
@@ -90,8 +92,10 @@ class MediaGridView : ConstraintLayout {
 
     fun addMedia(media: Media) {
         mediaList.add(media)
-        App.settingsRepo.savedMedia = App.mediaAdapter.toJson(mediaList.toList())
+        val strMediaList = mediaListAdapter().toJson(mediaList.toList())
+        App.settingsRepo.savedMedia = strMediaList
         controller.media.accept(mediaList.toList())
+        Timber.d("Bipin - $strMediaList")
     }
 
 }

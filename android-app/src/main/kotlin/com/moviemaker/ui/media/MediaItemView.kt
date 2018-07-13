@@ -2,6 +2,7 @@ package com.moviemaker.ui.media
 
 import android.content.Context
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -30,7 +31,9 @@ class MediaItemView : FrameLayout {
 
     // public functions
     fun bind(media: Media) {
-        imageView.setImageURI(Uri.parse(media.path))
+        val imageUri = Uri.parse(media.path)
+        val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
+        imageView.setImageBitmap(bitmap)
     }
 
     // Model

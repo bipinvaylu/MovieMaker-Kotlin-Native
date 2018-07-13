@@ -10,7 +10,7 @@ class SettingsRepository(factory: Settings.Factory) {
 
     private val MEDIA_LIST = "media_list"
     var savedMedia: String
-        get() = settings.getString(MEDIA_LIST, "[]")
+        get() =  settings.getString(MEDIA_LIST, "[]")
         set(value) = settings.putString(MEDIA_LIST, value)
 
 

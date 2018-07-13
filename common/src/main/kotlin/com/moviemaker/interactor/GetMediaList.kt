@@ -7,7 +7,7 @@ class GetMediaList constructor(
     private val local: LocalMediaDataSource
 ) {
     fun execute(onComplete: (List<Media>) -> Unit) {
-        local.getMediaList() {
+        local.getMediaList {
             onComplete(it)
         }
     }
