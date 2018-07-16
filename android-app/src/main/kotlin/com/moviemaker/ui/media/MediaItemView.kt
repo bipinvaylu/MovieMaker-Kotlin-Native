@@ -35,7 +35,6 @@ class MediaItemView : FrameLayout {
         val imageUri = Uri.parse(media.path)
         App.component.picasso()
                 .load(imageUri)
-                .placeholder(R.drawable.ic_media_24px)
                 .into(imageView)
     }
 
