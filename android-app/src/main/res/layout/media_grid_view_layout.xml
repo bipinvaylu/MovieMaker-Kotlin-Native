@@ -1,82 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.moviemaker.ui.media.MediaGridView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    >
 
     <android.support.constraint.Guideline
-            android:id="@+id/center_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5"
-    />
+        android:id="@+id/center_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"
+        />
 
     <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/center_guideline"
-            app:layout_constraintBottom_toBottomOf="@id/center_guideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone"
-    />
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/center_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/center_guideline"
+        />
 
     <ImageView
-            android:id="@+id/empty_image_view"
-            android:layout_width="@dimen/material_increment_3x"
-            android:layout_height="@dimen/material_increment_3x"
-            app:layout_constraintBottom_toTopOf="@id/center_guideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/ic_media_24px"
-    />
-    <TextView
-            android:id="@+id/empty_title_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/material_increment_3x"
-            app:layout_constraintTop_toBottomOf="@id/empty_image_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/media_empty_title"
-            android:textSize="@dimen/material_typography_regular_title_text_size"
-    />
+        android:id="@+id/empty_image_view"
+        android:layout_width="@dimen/material_increment_3x"
+        android:layout_height="@dimen/material_increment_3x"
+        android:src="@drawable/ic_media_24px"
+        app:layout_constraintBottom_toTopOf="@id/center_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <TextView
-            android:id="@+id/empty_body_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/material_increment_1x"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/empty_title_text_view"
-            android:text="@string/media_empty_body"
-            android:textSize="@dimen/material_typography_regular_body_1_text_size"
-    />
+        android:id="@+id/empty_title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/material_increment_3x"
+        android:gravity="center"
+        android:text="@string/media_empty_title"
+        android:textSize="@dimen/material_typography_regular_title_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/empty_image_view"
+        />
+
+    <TextView
+        android:id="@+id/empty_body_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/material_increment_1x"
+        android:gravity="center"
+        android:text="@string/media_empty_body"
+        android:textSize="@dimen/material_typography_regular_body_1_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/empty_title_text_view"
+        />
 
     <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="@dimen/material_increment_0.5x"
-            android:layout_marginEnd="@dimen/material_increment_0.5x"
-    />
+        android:id="@+id/recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/material_baseline_grid_0.5x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <android.support.constraint.Group
-            android:id="@+id/empty_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="empty_image_view, empty_title_text_view, empty_body_text_view"
-    />
+        android:id="@+id/empty_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="empty_image_view, empty_title_text_view, empty_body_text_view"
+        />
 
 </com.moviemaker.ui.media.MediaGridView>

@@ -46,9 +46,9 @@ class MediaGridView : ConstraintLayout {
     @JvmOverloads
     @Suppress("ConvertSecondaryConstructorToPrimary")
     constructor(
-            context: Context,
-            attrs: AttributeSet? = null,
-            defStyleAttr: Int = 0
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0
     ) : super(context, attrs, defStyleAttr)
 
 
@@ -62,7 +62,6 @@ class MediaGridView : ConstraintLayout {
         val spanCount = resources.getInteger(R.integer.grid_span_count)
         val spacing = resources.getDimensionPixelSize(R.dimen.material_baseline_grid_1x)
         val layoutManager = GridLayoutManager(context, spanCount)
-        layoutManager.spanSizeLookup = controller.getSpanSizeLookup(spanCount)
 
         recyclerView.adapter = controller.adapter
         recyclerView.layoutManager = layoutManager
