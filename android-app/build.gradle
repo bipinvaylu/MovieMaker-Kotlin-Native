@@ -36,6 +36,13 @@ android {
     packagingOptions {
         exclude 'META-INF/*.kotlin_module'
     }
+
+    defaultConfig {
+        multiDexEnabled true
+    }
+    dexOptions{
+        javaMaxHeapSize "4g"
+    }
 }
 
 repositories {
