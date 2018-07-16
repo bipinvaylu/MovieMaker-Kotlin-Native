@@ -1,6 +1,5 @@
 package com.moviemaker.ui.media
 
-import android.support.v7.widget.GridLayoutManager.SpanSizeLookup
 import com.airbnb.epoxy.EpoxyController
 import com.moviemaker.domain.Media
 import io.reactivex.functions.Consumer
@@ -29,13 +28,5 @@ class MediaController : EpoxyController() {
         }
     }
 
-    // functions
-    fun getSpanSizeLookup(spanCount: Int): SpanSizeLookup {
-        return object : SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return spanCount
-            }
-        }
-    }
 
 }

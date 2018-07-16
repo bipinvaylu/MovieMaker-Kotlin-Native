@@ -4,6 +4,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-platform-android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 
 buildscript {
@@ -52,13 +53,19 @@ repositories {
 }
 
 dependencies {
+    //Projects
     implementation project(":common-android")
 
+    // Annotation processors
+    kapt libraries.daggerCompiler
+
+    //Libraries
     implementation libraries.androidSupport.appCompat
     implementation libraries.androidSupport.cardView
     implementation libraries.androidSupport.constraintLayout
     implementation libraries.androidSupport.design
     implementation libraries.androidSupport.recyclerView
+    implementation libraries.dagger
     implementation libraries.epoxy
     implementation libraries.kotlin.stdlib
     implementation libraries.kotterKnife
