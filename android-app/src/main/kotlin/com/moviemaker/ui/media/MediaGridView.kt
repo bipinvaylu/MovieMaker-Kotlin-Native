@@ -46,9 +46,9 @@ class MediaGridView : ConstraintLayout {
     @JvmOverloads
     @Suppress("ConvertSecondaryConstructorToPrimary")
     constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+            context: Context,
+            attrs: AttributeSet? = null,
+            defStyleAttr: Int = 0
     ) : super(context, attrs, defStyleAttr)
 
 
@@ -71,23 +71,26 @@ class MediaGridView : ConstraintLayout {
 
     // public functions
     fun loadMediaList() {
-        emptyViewGroup.visibility = View.GONE
-        progressBar.visibility = View.VISIBLE
+        if (isLoadingMedia()) return
+        showViews(progressBar)
+        hideViews(emptyViewGroup, recyclerView)
         getMediaList.execute {
             Timber.d("Bipin - GetMediaList list: $it")
-            progressBar.visibility = GONE
+            hideViews(progressBar)
             mediaList.clear()
             mediaList.addAll(it)
             controller.media.accept(it)
             if (mediaList.size == 0) {
-                emptyViewGroup.visibility = View.VISIBLE
-                recyclerView.visibility = View.GONE
+                showViews(emptyViewGroup)
+                hideViews(recyclerView)
             } else {
-                emptyViewGroup.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
+                hideViews(emptyViewGroup)
+                showViews(recyclerView)
             }
         }
     }
+
+    private fun isLoadingMedia() = progressBar.visibility == View.VISIBLE
 
     fun addMedia(media: Media) {
         mediaList.add(media)
@@ -96,5 +99,27 @@ class MediaGridView : ConstraintLayout {
         controller.media.accept(mediaList.toList())
         Timber.d("Bipin - $strMediaList")
     }
+
+
+    private fun showViews(vararg views: View) {
+        views.forEach {
+            it.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideViews(vararg views: View) {
+        views.forEach {
+            it.visibility = View.GONE
+        }
+    }
+
+    fun showLoading() {
+        showViews(progressBar)
+    }
+
+    fun hideLoading() {
+        hideViews(progressBar)
+    }
+
 
 }

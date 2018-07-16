@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_CHOOSER_REQUEST_CODE
                 && resultCode == Activity.RESULT_OK) {
+            mediaGridView.showLoading()
             Observable.create<Media> { emitter ->
                 val fileDirectory = File(Environment.getExternalStorageDirectory().absolutePath + "/media/")
                 Timber.d("Bipin - FileDir: $fileDirectory, isExists: ${fileDirectory.exists()}")
@@ -138,6 +139,7 @@ class MainActivity : AppCompatActivity() {
                     .doOnNext { media ->
                         Timber.d("Bipin - Media: $media")
                         mediaGridView.addMedia(media)
+                        mediaGridView.hideLoading()
                     }
                     .subscribe()
         }
