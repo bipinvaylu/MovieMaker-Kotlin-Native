@@ -98,6 +98,13 @@ class MediaGridView : ConstraintLayout {
         App.settingsRepo.savedMedia = strMediaList
         controller.media.accept(mediaList.toList())
         Timber.d("Bipin - $strMediaList")
+        if (mediaList.size == 0) {
+            showViews(emptyViewGroup)
+            hideViews(recyclerView)
+        } else {
+            hideViews(emptyViewGroup)
+            showViews(recyclerView)
+        }
     }
 
 
@@ -114,6 +121,7 @@ class MediaGridView : ConstraintLayout {
     }
 
     fun showLoading() {
+        hideViews(emptyViewGroup)
         showViews(progressBar)
     }
 
