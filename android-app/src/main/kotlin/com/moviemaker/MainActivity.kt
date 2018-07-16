@@ -21,13 +21,14 @@ import com.moviemaker.domain.Media
 import com.moviemaker.extension.showImageChooser
 import com.moviemaker.ui.media.MediaGridView
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.util.Date
-import java.util.UUID
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -51,11 +52,11 @@ class MainActivity : AppCompatActivity() {
             showImageChooser(IMAGE_CHOOSER_REQUEST_CODE)
         }
         if (ContextCompat.checkSelfPermission(this, READ_PERMISSION) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, WRITE_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(this, WRITE_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
-                this,
-                arrayOf(READ_PERMISSION, WRITE_PERMISSION),
-                READ_PERMISSION_REQUEST_CODE
+                    this,
+                    arrayOf(READ_PERMISSION, WRITE_PERMISSION),
+                    READ_PERMISSION_REQUEST_CODE
             )
         } else {
             mediaGridView.loadMediaList()
@@ -84,57 +85,61 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_CHOOSER_REQUEST_CODE
-            && resultCode == Activity.RESULT_OK) {
-            Observable.create<Media> {
+                && resultCode == Activity.RESULT_OK) {
+            Observable.create<Media> { emitter ->
+                val fileDirectory = File(Environment.getExternalStorageDirectory().absolutePath + "/media/")
+                Timber.d("Bipin - FileDir: $fileDirectory, isExists: ${fileDirectory.exists()}")
+                if (!fileDirectory.exists()) {
+                    fileDirectory.mkdirs()
+                }
 
+                val selectedImage = data.data
+                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+                // Get the cursor
+                val cursor = contentResolver.query(selectedImage,
+                        filePathColumn, null, null, null)
+                // Move to first row
+                cursor.moveToFirst()
+
+                val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+                val imgDecodableString = cursor.getString(columnIndex)
+
+                val fileGallery = File(imgDecodableString)
+                val bitmap = BitmapFactory.decodeFile(fileGallery.absolutePath)
+
+
+                cursor.close()
+
+                val imageName = UUID.randomUUID().toString() + ".PNG"
+
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos)
+                val b = baos.toByteArray()
+
+                val file = File(fileDirectory, imageName)
+
+                try {
+                    val out = FileOutputStream(file)
+                    out.write(b)
+                    out.flush()
+                    out.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                val uri = Uri.fromFile(file)
+                Timber.d("URI: $uri")
+                val media = getImageDetails(uri)
+                emitter.onNext(media)
             }
-
-            val fileDirectory = File(Environment.getExternalStorageDirectory().absolutePath + "/media/")
-            Timber.d("FileDir: $fileDirectory")
-            if (!fileDirectory.exists()) {
-                fileDirectory.mkdirs()
-            }
-
-            val selectedImage = data.data
-            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-
-            // Get the cursor
-            val cursor = contentResolver.query(selectedImage,
-                filePathColumn, null, null, null)
-            // Move to first row
-            cursor.moveToFirst()
-
-            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-            val imgDecodableString = cursor.getString(columnIndex)
-
-            val fileGallery = File(imgDecodableString)
-            val bitmap = BitmapFactory.decodeFile(fileGallery.absolutePath)
-
-
-            cursor.close()
-
-            val imageName = UUID.randomUUID().toString() + ".PNG"
-
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos)
-            val b = baos.toByteArray()
-
-            val file = File(fileDirectory, imageName)
-
-            try {
-                val out = FileOutputStream(file)
-                out.write(b)
-                out.flush()
-                out.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            val uri = Uri.fromFile(file)
-            Timber.d("URI: ${uri.toString()}")
-            val media = getImageDetails(uri)
-//            Timber.d("Image URI: $selectedImageUri")
-            mediaGridView.addMedia(media)
+                    .observeOn(Schedulers.io())
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .doOnNext { media ->
+                        Timber.d("Bipin - Media: $media")
+                        mediaGridView.addMedia(media)
+                    }
+                    .subscribe()
         }
     }
 
@@ -143,16 +148,16 @@ class MainActivity : AppCompatActivity() {
         if (contentUri.scheme == ContentResolver.SCHEME_CONTENT) {
             try {
                 val fileInputStream = applicationContext?.contentResolver
-                    ?.openInputStream(contentUri)
+                        ?.openInputStream(contentUri)
                 fileSize = fileInputStream?.available() ?: 0
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
         return Media(
-            contentUri.toString(),
-            Date().time,
-            fileSize.toLong()
+                contentUri.toString(),
+                Date().time,
+                fileSize.toLong()
         )
     }
 
