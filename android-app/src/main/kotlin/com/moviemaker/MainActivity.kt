@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                 && resultCode == Activity.RESULT_OK) {
             mediaGridView.showLoading()
             Observable.create<Media> { emitter ->
+                Timber.d("Bipin - Create Observable, Thread: ${Thread.currentThread().name}")
                 val fileDirectory = File(Environment.getExternalStorageDirectory().absolutePath + "/media/")
                 Timber.d("Bipin - FileDir: $fileDirectory, isExists: ${fileDirectory.exists()}")
                 if (!fileDirectory.exists()) {
@@ -130,14 +131,12 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val uri = Uri.fromFile(file)
-                Timber.d("URI: $uri")
                 val media = getImageDetails(uri)
                 emitter.onNext(media)
             }
-                    .observeOn(Schedulers.io())
-                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
                     .doOnNext { media ->
-                        Timber.d("Bipin - Media: $media")
                         mediaGridView.addMedia(media)
                         mediaGridView.hideLoading()
                     }

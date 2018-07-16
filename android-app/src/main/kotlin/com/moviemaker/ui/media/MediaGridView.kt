@@ -38,7 +38,7 @@ class MediaGridView : ConstraintLayout {
     private val mediaList = mutableListOf<Media>()
     private val getMediaList: GetMediaList by lazy {
         Timber.d("Bipin - getMediaList init called")
-        GetMediaList(LocalMediaDataSource(App.settingsRepo))
+        GetMediaList(LocalMediaDataSource(App.component.prefsRepo()))
     }
 
     // constructors
@@ -95,9 +95,16 @@ class MediaGridView : ConstraintLayout {
     fun addMedia(media: Media) {
         mediaList.add(media)
         val strMediaList = mediaListAdapter().toJson(mediaList.toList())
-        App.settingsRepo.savedMedia = strMediaList
+        App.component.prefsRepo().savedMedia = strMediaList
         controller.media.accept(mediaList.toList())
         Timber.d("Bipin - $strMediaList")
+        if (mediaList.size == 0) {
+            showViews(emptyViewGroup)
+            hideViews(recyclerView)
+        } else {
+            hideViews(emptyViewGroup)
+            showViews(recyclerView)
+        }
     }
 
 
@@ -114,6 +121,7 @@ class MediaGridView : ConstraintLayout {
     }
 
     fun showLoading() {
+        hideViews(emptyViewGroup)
         showViews(progressBar)
     }
 
