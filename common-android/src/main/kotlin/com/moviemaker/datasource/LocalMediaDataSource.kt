@@ -1,6 +1,7 @@
 package com.moviemaker.datasource
 
 import android.os.Handler
+import android.os.Looper
 import com.moviemaker.domain.Media
 import com.moviemaker.settings.SettingsRepository
 import com.moviemaker.utils.mediaListAdapter
@@ -11,7 +12,7 @@ actual class LocalMediaDataSource(
 ) {
 
     actual fun getMediaList(onComplete: (List<Media>) -> Unit) {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         thread {
             val mediaList = mediaListAdapter().fromJson(settingsRepo.savedMedia)
             handler.post {
