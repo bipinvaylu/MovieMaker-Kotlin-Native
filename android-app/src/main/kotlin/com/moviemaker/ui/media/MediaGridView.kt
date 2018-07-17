@@ -13,7 +13,6 @@ import com.moviemaker.R
 import com.moviemaker.datasource.LocalMediaDataSource
 import com.moviemaker.domain.Media
 import com.moviemaker.interactor.GetMediaList
-import com.moviemaker.utils.mediaListAdapter
 import com.moviemaker.widget.recyclerview.SpacesItemDecoration
 import kotterknife.bindView
 import timber.log.Timber
@@ -94,9 +93,10 @@ class MediaGridView : ConstraintLayout {
 
     fun addMedia(media: Media) {
         mediaList.add(media)
-        val strMediaList = mediaListAdapter().toJson(mediaList.toList())
-        Timber.d("Bipin - mediaList.size: ${mediaList.size}, strMediaList: $strMediaList")
-        App.component.prefsRepo().savedMedia = strMediaList
+//        val strMediaList = mediaListAdapter().toJson(mediaList.toList())
+//        Timber.d("Bipin - mediaList.size: ${mediaList.size}, strMediaList: $strMediaList")
+//        App.component.prefsRepo().savedMedia = strMediaList
+        App.component.prefsRepo().addMedia(media)
         controller.media.accept(mediaList.toList())
         if (mediaList.size == 0) {
             showViews(emptyViewGroup)

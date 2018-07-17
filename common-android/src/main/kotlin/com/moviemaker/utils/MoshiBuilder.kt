@@ -1,12 +1,14 @@
 package com.moviemaker.utils
 
 import com.moviemaker.domain.Media
+import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 
 
 fun moshiBuilder() =
         Moshi.Builder()
+                .add(KotlinJsonAdapterFactory())
                 .add(MediaAdapter())
                 .build()
 

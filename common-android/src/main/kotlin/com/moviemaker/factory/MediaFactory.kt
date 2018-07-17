@@ -1,6 +1,5 @@
 package com.moviemaker.factory
 
-import com.moviemaker.domain.Image
 import com.moviemaker.domain.Media
 import java.util.*
 
@@ -18,7 +17,7 @@ object MediaFactory {
         createdDate: Long,
         fileSize: Long
     ): Media {
-        return Image(
+        return Media.Image(
             path,
 //            thmPath,
             createdDate,

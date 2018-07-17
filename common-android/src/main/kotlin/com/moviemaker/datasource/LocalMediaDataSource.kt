@@ -4,8 +4,6 @@ import android.os.Handler
 import android.os.Looper
 import com.moviemaker.domain.Media
 import com.moviemaker.settings.SettingsRepository
-import com.moviemaker.utils.mediaListAdapter
-import timber.log.Timber
 import kotlin.concurrent.thread
 
 actual class LocalMediaDataSource(
@@ -15,10 +13,11 @@ actual class LocalMediaDataSource(
     actual fun getMediaList(onComplete: (List<Media>) -> Unit) {
         val handler = Handler(Looper.getMainLooper())
         thread {
-            Timber.d("Bipin - savedMedia: ${settingsRepo.savedMedia}")
-            val mediaList = mediaListAdapter().fromJson(settingsRepo.savedMedia)
+//            Timber.d("Bipin - savedMedia: ${settingsRepo.savedMedia}")
+//            val mediaList = mediaListAdapter().fromJson(settingsRepo.savedMedia)
+            val mediaList = settingsRepo.getMediaList()
             handler.post {
-                onComplete(mediaList ?: listOf())
+                onComplete(mediaList)
             }
         }
     }
