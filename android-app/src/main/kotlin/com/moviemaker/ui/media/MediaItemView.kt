@@ -11,7 +11,6 @@ import com.airbnb.epoxy.EpoxyModel
 import com.moviemaker.App
 import com.moviemaker.R
 import com.moviemaker.domain.Media
-import com.moviemaker.extension.isImageUri
 import kotterknife.bindView
 import timber.log.Timber
 
@@ -37,7 +36,7 @@ class MediaItemView : FrameLayout {
     // public functions
     fun bind(media: Media) {
         val mediaUri = Uri.parse(media.path)
-        if(mediaUri.isImageUri()) {
+        if(media.isImage) {
             App.component.picasso()
                     .load(mediaUri)
                     .into(imageView)

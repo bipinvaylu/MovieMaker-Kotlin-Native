@@ -9,7 +9,6 @@ import com.squareup.moshi.Types
 fun moshiBuilder() =
         Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
-                .add(MediaAdapter())
                 .build()
 
 fun mediaListAdapter() = moshiBuilder()

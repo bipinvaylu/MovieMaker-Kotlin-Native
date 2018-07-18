@@ -3,11 +3,8 @@ package com.moviemaker
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -22,9 +19,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
 import java.util.*
 
 
@@ -99,7 +93,11 @@ class MainActivity : AppCompatActivity() {
                 val selected: List<Uri> = Matisse.obtainResult(data)
                 Timber.d("selected: $selected")
                 selected.forEach {
-                    val media = getMedia(it)
+                    val media = Media(
+                            it.toString(),
+                            Date().time,
+                            0L
+                    )
                     emitter.onNext(media)
                 }
                 emitter.onComplete()
@@ -129,66 +127,66 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getMedia(uri: Uri): Media {
-        return if (uri.toString().contains("images")) {
-            Media.Image(
-                    uri.toString(),
-                    Date().time,
-                    0L
-            )
-        } else {
-            Media.Video(
-                    uri.toString(),
-                    Date().time,
-                    0L
-            )
-        }
-    }
+//    private fun getMedia(uri: Uri): Media {
+//        return if (uri.toString().contains("images")) {
+//            Media.Image(
+//                    uri.toString(),
+//                    Date().time,
+//                    0L
+//            )
+//        } else {
+//            Media.Video(
+//                    uri.toString(),
+//                    Date().time,
+//                    0L
+//            )
+//        }
+//    }
 
-    private fun getImageDetails(imageUri: Uri, fileDirectory: File): Media {
-
-        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-
-        // Get the cursor
-        val cursor = contentResolver.query(imageUri,
-                filePathColumn, null, null, null)
-        // Move to first row
-        cursor.moveToFirst()
-
-        val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-        val imgDecodableString = cursor.getString(columnIndex)
-
-        val fileGallery = File(imgDecodableString)
-        val bitmap = BitmapFactory.decodeFile(fileGallery.absolutePath)
-
-        cursor.close()
-
-        val imageName = UUID.randomUUID().toString() + ".PNG"
-
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos)
-        val b = baos.toByteArray()
-
-        val file = File(fileDirectory, imageName)
-
-        try {
-            val out = FileOutputStream(file)
-            out.write(b)
-            out.flush()
-            out.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-
-        val uri = Uri.fromFile(file)
-        val fileSize = file.inputStream().available()
-        return Media.Image(
-                uri.toString(),
-                Date().time,
-                fileSize.toLong()
-        )
-    }
+//    private fun getImageDetails(imageUri: Uri, fileDirectory: File): Media {
+//
+//        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+//
+//        // Get the cursor
+//        val cursor = contentResolver.query(imageUri,
+//                filePathColumn, null, null, null)
+//        // Move to first row
+//        cursor.moveToFirst()
+//
+//        val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+//        val imgDecodableString = cursor.getString(columnIndex)
+//
+//        val fileGallery = File(imgDecodableString)
+//        val bitmap = BitmapFactory.decodeFile(fileGallery.absolutePath)
+//
+//        cursor.close()
+//
+//        val imageName = UUID.randomUUID().toString() + ".PNG"
+//
+//        val baos = ByteArrayOutputStream()
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos)
+//        val b = baos.toByteArray()
+//
+//        val file = File(fileDirectory, imageName)
+//
+//        try {
+//            val out = FileOutputStream(file)
+//            out.write(b)
+//            out.flush()
+//            out.close()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//
+//
+//        val uri = Uri.fromFile(file)
+//        val fileSize = file.inputStream().available()
+//        return Media.Image(
+//                uri.toString(),
+//                Date().time,
+//                fileSize.toLong()
+//        )
+//    }
 
     companion object {
 
