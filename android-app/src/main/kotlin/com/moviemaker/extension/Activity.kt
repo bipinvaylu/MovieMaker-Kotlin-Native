@@ -1,20 +1,34 @@
 package com.moviemaker.extension
 
 import android.app.Activity
-import android.content.Intent
-import com.moviemaker.R
+import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import com.zhihu.matisse.engine.impl.PicassoEngine
 
-fun Activity.showImageChooser(requestCode: Int) {
-    val pickPhoto = Intent(
-            Intent.ACTION_PICK
-            ,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-    )
-    pickPhoto.type = "image/*"
-    pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    pickPhoto.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-    val chooser = Intent.createChooser(
-            pickPhoto,
-            getString(R.string.choose_picture)
-    )
-    startActivityForResult(chooser, requestCode)
+
+fun Activity.showMediaChooser(requestCode: Int) {
+//    val pickPhoto = Intent(
+//            Intent.ACTION_PICK
+//            ,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+//    )
+//    pickPhoto.type = "video/*"
+//    pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//    pickPhoto.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+//    val chooser = Intent.createChooser(
+//            pickPhoto,
+//            getString(R.string.choose_media)
+//    )
+//    startActivityForResult(chooser, requestCode)
+    Matisse.from(this)
+            .choose(MimeType.ofAll())
+            .countable(false)
+//            TODO: Fix camera crash
+//            .capture(true)
+//            .captureStrategy(
+//                    CaptureStrategy(true, "com.moviemaker.fileprovider")
+//            )
+            .maxSelectable(10)
+            .thumbnailScale(0.85f)
+            .imageEngine(PicassoEngine())
+            .forResult(requestCode)
 }

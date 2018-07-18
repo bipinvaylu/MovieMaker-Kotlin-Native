@@ -70,6 +70,7 @@ dependencies {
     implementation libraries.kotlin.stdlib
     implementation libraries.kotterKnife
     implementation libraries.materialValues
+    implementation libraries.matisse
     implementation libraries.moshi.core
     implementation libraries.moshi.adapters
     implementation libraries.picasso

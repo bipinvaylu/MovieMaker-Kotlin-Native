@@ -15,4 +15,14 @@ class SettingsRepository(factory: Settings.Factory) {
 
 
     fun clear() = settings.clear()
+
+//    private val mediaList = mutableListOf<Media>()
+//
+//    fun addMedia(media: Media) {
+//        mediaList.add(media)
+//    }
+//
+//    fun getMediaList() = mediaList.toList()
+
+
 }

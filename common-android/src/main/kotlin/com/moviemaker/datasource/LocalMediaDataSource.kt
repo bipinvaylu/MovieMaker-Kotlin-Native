@@ -14,7 +14,9 @@ actual class LocalMediaDataSource(
     actual fun getMediaList(onComplete: (List<Media>) -> Unit) {
         val handler = Handler(Looper.getMainLooper())
         thread {
+//            Timber.d("Bipin - savedMedia: ${settingsRepo.savedMedia}")
             val mediaList = mediaListAdapter().fromJson(settingsRepo.savedMedia)
+//            val mediaList = settingsRepo.getMediaList()
             handler.post {
                 onComplete(mediaList ?: listOf())
             }

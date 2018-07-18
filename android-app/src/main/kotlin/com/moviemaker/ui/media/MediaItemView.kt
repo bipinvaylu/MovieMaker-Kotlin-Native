@@ -1,7 +1,9 @@
 package com.moviemaker.ui.media
 
+import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -10,6 +12,7 @@ import com.moviemaker.App
 import com.moviemaker.R
 import com.moviemaker.domain.Media
 import kotterknife.bindView
+import timber.log.Timber
 
 
 class MediaItemView : FrameLayout {
@@ -32,10 +35,50 @@ class MediaItemView : FrameLayout {
 
     // public functions
     fun bind(media: Media) {
-        val imageUri = Uri.parse(media.path)
-        App.component.picasso()
-                .load(imageUri)
-                .into(imageView)
+        val mediaUri = Uri.parse(media.path)
+        if(media.isImage) {
+            App.component.picasso()
+                    .load(mediaUri)
+                    .into(imageView)
+            Timber.d("Bipin - ImageView width: ${imageView.width}, height: ${imageView.height}")
+        } else {
+            val videoId = mediaUri.toString().split("/").last().toLong()
+            val width = App.component.context().resources.getDimensionPixelSize(R.dimen.material_increment_9x)
+            val height = App.component.context().resources.getDimensionPixelSize(R.dimen.material_increment_5x)
+            App.component.picasso().load(
+                    ContentUris.withAppendedId(
+                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                            videoId
+                    )
+            )
+                    .resize(width, height)
+                    .centerCrop()
+                    .into(imageView)
+//            Observable.create<String> {emitter->
+//                val projection = arrayOf(MediaStore.Video.Media.DATA)
+//                val videoId = mediaUri.toString().split("/").last()
+//                val cursor = context.contentResolver.query(
+//                        MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
+//                        projection,
+//                        MediaStore.Video.Thumbnails.VIDEO_ID + "=?",
+//                        arrayOf(videoId),
+//                        null
+//                )
+//                cursor.moveToFirst()
+//                val columnIndex = cursor.getColumnIndex(projection[0])
+//                val thumbnailPath = cursor.getString(columnIndex)
+//                cursor.close()
+//                emitter.onNext(thumbnailPath)
+//                emitter.onComplete()
+//            }.observeOn(AndroidSchedulers.mainThread())
+//                    .subscribeOn(Schedulers.io())
+//                    .doOnNext { thumbnailPath ->
+//                        App.component.picasso()
+//                                .load(File(thumbnailPath))
+//                                .into(imageView)
+//                    }
+//                    .subscribe()
+        }
     }
 
     // Model

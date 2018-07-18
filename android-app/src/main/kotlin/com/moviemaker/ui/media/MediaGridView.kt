@@ -95,9 +95,10 @@ class MediaGridView : ConstraintLayout {
     fun addMedia(media: Media) {
         mediaList.add(media)
         val strMediaList = mediaListAdapter().toJson(mediaList.toList())
+//        Timber.d("Bipin - mediaList.size: ${mediaList.size}, strMediaList: $strMediaList")
         App.component.prefsRepo().savedMedia = strMediaList
+//        App.component.prefsRepo().addMedia(media)
         controller.media.accept(mediaList.toList())
-        Timber.d("Bipin - $strMediaList")
         if (mediaList.size == 0) {
             showViews(emptyViewGroup)
             hideViews(recyclerView)

@@ -5,11 +5,6 @@ import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 
-//fun moshiBuilder() =
-//        AdapterFactories.PERSIST_FACTORIES
-//                .fold(Moshi.Builder()) { builder, factory -> builder.add(factory) }
-//                .add(KotlinJsonAdapterFactory())
-//                .build()
 
 fun moshiBuilder() =
         Moshi.Builder()
@@ -23,3 +18,12 @@ fun mediaListAdapter() = moshiBuilder()
                         Media::class.java
                 )
         )
+
+//fun moshiBuilder() =
+//    AdapterFactories.PERSIST_FACTORIES
+//            .fold(Moshi.Builder()) { builder, factory -> builder.add(factory) }
+//            .add(KotlinJsonAdapterFactory())
+//            .build()
+//
+//fun mediaListAdapter() = moshiBuilder()
+//        .adapter<List<Media>>(List::class.java)
