@@ -2,14 +2,12 @@ package com.moviemaker
 
 import android.Manifest
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ActivityCompat
@@ -18,8 +16,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import com.moviemaker.domain.Media
-import com.moviemaker.extension.showImageChooser
+import com.moviemaker.extension.showMediaChooser
 import com.moviemaker.ui.media.MediaGridView
+import com.zhihu.matisse.Matisse
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         toolbar.setTitle(R.string.app_name)
 
         addImageButton.setOnClickListener { _ ->
-            showImageChooser(IMAGE_CHOOSER_REQUEST_CODE)
+            showMediaChooser(IMAGE_CHOOSER_REQUEST_CODE)
         }
         if (ContextCompat.checkSelfPermission(this, READ_PERMISSION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, WRITE_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
@@ -82,57 +81,39 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_CHOOSER_REQUEST_CODE
-                && resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK
+                && requestCode == IMAGE_CHOOSER_REQUEST_CODE
+                && data != null) {
             mediaGridView.showLoading()
             Observable.create<Media> { emitter ->
-                Timber.d("Bipin - Create Observable, Thread: ${Thread.currentThread().name}")
-                val fileDirectory = File(Environment.getExternalStorageDirectory().absolutePath + "/media/")
-                Timber.d("Bipin - FileDir: $fileDirectory, isExists: ${fileDirectory.exists()}")
-                if (!fileDirectory.exists()) {
-                    fileDirectory.mkdirs()
+                val selected: List<Uri> = Matisse.obtainResult(data)
+                Timber.d("selected: $selected")
+                selected.forEach {
+                    val media = Media.Image(
+                            it.toString(),
+                            Date().time,
+                            0L
+                    )
+                    emitter.onNext(media)
                 }
-
-                val selectedImage = data.data
-                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-
-                // Get the cursor
-                val cursor = contentResolver.query(selectedImage,
-                        filePathColumn, null, null, null)
-                // Move to first row
-                cursor.moveToFirst()
-
-                val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-                val imgDecodableString = cursor.getString(columnIndex)
-
-                val fileGallery = File(imgDecodableString)
-                val bitmap = BitmapFactory.decodeFile(fileGallery.absolutePath)
-
-
-                cursor.close()
-
-                val imageName = UUID.randomUUID().toString() + ".PNG"
-
-                val baos = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos)
-                val b = baos.toByteArray()
-
-                val file = File(fileDirectory, imageName)
-
-                try {
-                    val out = FileOutputStream(file)
-                    out.write(b)
-                    out.flush()
-                    out.close()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
-                val uri = Uri.fromFile(file)
-                val media = getImageDetails(uri)
-                emitter.onNext(media)
+                emitter.onComplete()
+//                Timber.d("Bipin - Create Observable, Thread: ${Thread.currentThread().name}")
+//                val fileDirectory = File(Environment.getExternalStorageDirectory().absolutePath + "/media/")
+//                Timber.d("Bipin - FileDir: $fileDirectory, isExists: ${fileDirectory.exists()}")
+//                if (!fileDirectory.exists()) {
+//                    fileDirectory.mkdirs()
+//                }
+//
+//                val selectedMediaUri = data.data
+//                if (selectedMediaUri.toString().contains("image")) {
+//                    val media = getImageDetails(selectedMediaUri, fileDirectory)
+//                    emitter.onNext(media)
+//                } else {
+//                    val media = getImageDetails(selectedMediaUri, fileDirectory)
+//                    emitter.onNext(media)
+//                }
             }
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
@@ -144,19 +125,46 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getImageDetails(contentUri: Uri): Media {
-        var fileSize = 0
-        if (contentUri.scheme == ContentResolver.SCHEME_CONTENT) {
-            try {
-                val fileInputStream = applicationContext?.contentResolver
-                        ?.openInputStream(contentUri)
-                fileSize = fileInputStream?.available() ?: 0
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+    private fun getImageDetails(imageUri: Uri, fileDirectory: File): Media {
+
+        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+        // Get the cursor
+        val cursor = contentResolver.query(imageUri,
+                filePathColumn, null, null, null)
+        // Move to first row
+        cursor.moveToFirst()
+
+        val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+        val imgDecodableString = cursor.getString(columnIndex)
+
+        val fileGallery = File(imgDecodableString)
+        val bitmap = BitmapFactory.decodeFile(fileGallery.absolutePath)
+
+        cursor.close()
+
+        val imageName = UUID.randomUUID().toString() + ".PNG"
+
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos)
+        val b = baos.toByteArray()
+
+        val file = File(fileDirectory, imageName)
+
+        try {
+            val out = FileOutputStream(file)
+            out.write(b)
+            out.flush()
+            out.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
+
+        val uri = Uri.fromFile(file)
+        val fileSize = file.inputStream().available()
         return Media.Image(
-                contentUri.toString(),
+                uri.toString(),
                 Date().time,
                 fileSize.toLong()
         )
