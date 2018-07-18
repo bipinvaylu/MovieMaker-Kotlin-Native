@@ -4,7 +4,6 @@ import android.app.Activity
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.PicassoEngine
-import timber.log.Timber
 
 
 fun Activity.showMediaChooser(requestCode: Int) {
@@ -31,13 +30,5 @@ fun Activity.showMediaChooser(requestCode: Int) {
             .maxSelectable(10)
             .thumbnailScale(0.85f)
             .imageEngine(PicassoEngine())
-            .originalEnable(true)
-            .maxOriginalSize(10)
-            .setOnSelectedListener { uriList, pathList ->
-                Timber.d("Bipin - onSelectedLister uriList:$uriList, pathList: $pathList")
-            }
-            .setOnCheckedListener {
-                Timber.d("Bipin - onCheckedListener called")
-            }
             .forResult(requestCode)
 }

@@ -3,21 +3,19 @@ package com.moviemaker
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import com.moviemaker.domain.Media
 import com.moviemaker.extension.showMediaChooser
 import com.moviemaker.ui.media.MediaGridView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zhihu.matisse.Matisse
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,7 +31,9 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     // private members
-
+    private val rxPermissions: RxPermissions by lazy {
+        RxPermissions(this)
+    }
 
     // views
     private val mediaGridView: MediaGridView by bindView(R.id.media_grid_view)
@@ -50,36 +50,44 @@ class MainActivity : AppCompatActivity() {
         addImageButton.setOnClickListener { _ ->
             showMediaChooser(IMAGE_CHOOSER_REQUEST_CODE)
         }
-        if (ContextCompat.checkSelfPermission(this, READ_PERMISSION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, WRITE_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(READ_PERMISSION, WRITE_PERMISSION),
-                    READ_PERMISSION_REQUEST_CODE
-            )
-        } else {
-            mediaGridView.loadMediaList()
-        }
 
-    }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>,
-                                            grantResults: IntArray
-    ) {
-        when (requestCode) {
-            READ_PERMISSION_REQUEST_CODE,
-            WRITE_PERMISSION_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+
+        rxPermissions.request(READ_PERMISSION, WRITE_PERMISSION)
+                .filter { true }
+                .subscribe {
                     mediaGridView.loadMediaList()
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                 }
-                return
-            }
-        }
+//        if (ContextCompat.checkSelfPermission(this, READ_PERMISSION) != PackageManager.PERMISSION_GRANTED &&
+//                ContextCompat.checkSelfPermission(this, WRITE_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(READ_PERMISSION, WRITE_PERMISSION),
+//                    READ_PERMISSION_REQUEST_CODE
+//            )
+//        } else {
+//            mediaGridView.loadMediaList()
+//        }
+
     }
+
+//    override fun onRequestPermissionsResult(requestCode: Int,
+//                                            permissions: Array<String>,
+//                                            grantResults: IntArray
+//    ) {
+//        when (requestCode) {
+//            READ_PERMISSION_REQUEST_CODE,
+//            WRITE_PERMISSION_REQUEST_CODE -> {
+//                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+//                    mediaGridView.loadMediaList()
+//                } else {
+//                    // permission denied, boo! Disable the
+//                    // functionality that depends on this permission.
+//                }
+//                return
+//            }
+//        }
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -91,11 +99,7 @@ class MainActivity : AppCompatActivity() {
                 val selected: List<Uri> = Matisse.obtainResult(data)
                 Timber.d("selected: $selected")
                 selected.forEach {
-                    val media = Media.Image(
-                            it.toString(),
-                            Date().time,
-                            0L
-                    )
+                    val media = getMedia(it)
                     emitter.onNext(media)
                 }
                 emitter.onComplete()
@@ -122,6 +126,22 @@ class MainActivity : AppCompatActivity() {
                         mediaGridView.hideLoading()
                     }
                     .subscribe()
+        }
+    }
+
+    private fun getMedia(uri: Uri): Media {
+        return if (uri.toString().contains("images")) {
+            Media.Image(
+                    uri.toString(),
+                    Date().time,
+                    0L
+            )
+        } else {
+            Media.Video(
+                    uri.toString(),
+                    Date().time,
+                    0L
+            )
         }
     }
 
@@ -181,5 +201,4 @@ class MainActivity : AppCompatActivity() {
         private const val WRITE_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
     }
-
 }
