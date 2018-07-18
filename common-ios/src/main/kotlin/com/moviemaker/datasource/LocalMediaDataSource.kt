@@ -1,9 +1,9 @@
-package com.moviemaker.factory
+package com.moviemaker.datasource
 
 import com.moviemaker.domain.Media
 
 actual class LocalMediaDataSource {
-    actual fun getMediaList(onComplete: (List<Image>) -> Unit) {
+    actual fun getMediaList(onComplete: (List<Media>) -> Unit) {
         // TODO: fet data and return list
     }
 
