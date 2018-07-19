@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType.FIT_CENTER
 import android.widget.LinearLayout
+import com.moviemaker.datasource.LocalMediaDataSource
 import com.moviemaker.domain.Media
+import com.moviemaker.interactor.GetMediaList
 import timber.log.Timber
 import java.util.Date
 
@@ -37,6 +39,13 @@ class MainActivity : AppCompatActivity() {
             )
             val chooser = Intent.createChooser(pickPhoto, "Choose a Picture")
             startActivityForResult(chooser, 1)
+        }
+
+        val getMediaList = GetMediaList(LocalMediaDataSource())
+        getMediaList.execute {
+            it.mapIndexed { index: Int, media: Media ->
+                Timber.d("Bipin - Index: $index, Media: $media")
+            }
         }
     }
 

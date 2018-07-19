@@ -1,5 +1,7 @@
 package com.moviemaker.datasource
 
-interface LocalMediaDatasSource {
+import com.moviemaker.domain.Media
 
+expect open class LocalMediaDataSource {
+    fun getMediaList(onComplete: (List<Media>) -> Unit)
 }
