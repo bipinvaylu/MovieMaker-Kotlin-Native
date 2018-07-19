@@ -109,16 +109,14 @@ class MainActivity : AppCompatActivity() {
         cursor.close()
         return Media(uri.toString(), createdDate, fileSize, duration)
     }
-    
+
 
     companion object {
 
         private const val IMAGE_CHOOSER_REQUEST_CODE = 1
 
-        private const val READ_PERMISSION_REQUEST_CODE = 100
         private const val READ_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE
-
-        private const val WRITE_PERMISSION_REQUEST_CODE = 101
+        
         private const val WRITE_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
     }
