@@ -112,49 +112,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun retriveMediaDetail(uri: Uri): Media? {
+        val isVideo = !uri.isImageUri()
 
-        return if (uri.isImageUri()) {
-            val mediaColumns = arrayOf(
-                    MediaStore.MediaColumns.DATE_ADDED,
-                    MediaStore.MediaColumns.SIZE
-            )
-
-            val cursor = contentResolver.query(
-                    uri,
-                    mediaColumns,
-                    null,
-                    null,
-                    null
-            )
-            cursor.moveToFirst()
-            val createdDate = cursor.getLong(cursor.getColumnIndex(mediaColumns[0]))
-            val fileSize = cursor.getLong(cursor.getColumnIndex(mediaColumns[1]))
-            cursor.close()
-
-            Media(uri.toString(), createdDate, fileSize)
-        } else {
-
-            val mediaColumns = arrayOf(
-                    MediaStore.MediaColumns.DATE_ADDED,
-                    MediaStore.MediaColumns.SIZE,
-                    MediaStore.Video.Media.DURATION
-            )
-
-            val cursor = contentResolver.query(
-                    uri,
-                    mediaColumns,
-                    null,
-                    null,
-                    null
-            )
-            cursor.moveToFirst()
-            val createdDate = cursor.getLong(cursor.getColumnIndex(mediaColumns[0]))
-            val fileSize = cursor.getLong(cursor.getColumnIndex(mediaColumns[1]))
-            val duration = cursor.getLong(cursor.getColumnIndex(mediaColumns[2]))
-            cursor.close()
-
-            Media(uri.toString(), createdDate, fileSize, duration)
+        val mediaColumns = arrayListOf(
+                MediaStore.MediaColumns.DATE_ADDED,
+                MediaStore.MediaColumns.SIZE
+        )
+        if (isVideo) {
+            mediaColumns.add(MediaStore.Video.Media.DURATION)
         }
+
+        val cursor = contentResolver.query(
+                uri,
+                mediaColumns.toTypedArray(),
+                null,
+                null,
+                null
+        )
+        cursor.moveToFirst()
+        val createdDate = cursor.getLong(cursor.getColumnIndex(mediaColumns[0]))
+        val fileSize = cursor.getLong(cursor.getColumnIndex(mediaColumns[1]))
+        val duration = if (isVideo) {
+            cursor.getLong(cursor.getColumnIndex(mediaColumns[2]))
+        } else {
+            0
+        }
+        cursor.close()
+        return Media(uri.toString(), createdDate, fileSize, duration)
     }
 
 //    private fun getMedia(uri: Uri): Media {
