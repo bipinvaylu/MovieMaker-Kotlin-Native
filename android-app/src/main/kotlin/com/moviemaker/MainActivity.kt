@@ -5,11 +5,13 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import com.moviemaker.domain.Media
+import com.moviemaker.extension.isImageUri
 import com.moviemaker.extension.showMediaChooser
 import com.moviemaker.ui.media.MediaGridView
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -19,7 +21,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import timber.log.Timber
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -93,29 +94,12 @@ class MainActivity : AppCompatActivity() {
                 val selected: List<Uri> = Matisse.obtainResult(data)
                 Timber.d("selected: $selected")
                 selected.forEach {
-                    val media = Media(
-                            it.toString(),
-                            Date().time,
-                            0L
-                    )
-                    emitter.onNext(media)
+                    val media = retriveMediaDetail(it)
+                    media?.let {
+                        emitter.onNext(it)
+                    }
                 }
                 emitter.onComplete()
-//                Timber.d("Bipin - Create Observable, Thread: ${Thread.currentThread().name}")
-//                val fileDirectory = File(Environment.getExternalStorageDirectory().absolutePath + "/media/")
-//                Timber.d("Bipin - FileDir: $fileDirectory, isExists: ${fileDirectory.exists()}")
-//                if (!fileDirectory.exists()) {
-//                    fileDirectory.mkdirs()
-//                }
-//
-//                val selectedMediaUri = data.data
-//                if (selectedMediaUri.toString().contains("image")) {
-//                    val media = getImageDetails(selectedMediaUri, fileDirectory)
-//                    emitter.onNext(media)
-//                } else {
-//                    val media = getImageDetails(selectedMediaUri, fileDirectory)
-//                    emitter.onNext(media)
-//                }
             }
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
@@ -124,6 +108,52 @@ class MainActivity : AppCompatActivity() {
                         mediaGridView.hideLoading()
                     }
                     .subscribe()
+        }
+    }
+
+    fun retriveMediaDetail(uri: Uri): Media? {
+
+        return if (uri.isImageUri()) {
+            val mediaColumns = arrayOf(
+                    MediaStore.MediaColumns.DATE_ADDED,
+                    MediaStore.MediaColumns.SIZE
+            )
+
+            val cursor = contentResolver.query(
+                    uri,
+                    mediaColumns,
+                    null,
+                    null,
+                    null
+            )
+            cursor.moveToFirst()
+            val createdDate = cursor.getLong(cursor.getColumnIndex(mediaColumns[0]))
+            val fileSize = cursor.getLong(cursor.getColumnIndex(mediaColumns[1]))
+            cursor.close()
+
+            Media(uri.toString(), createdDate, fileSize)
+        } else {
+
+            val mediaColumns = arrayOf(
+                    MediaStore.MediaColumns.DATE_ADDED,
+                    MediaStore.MediaColumns.SIZE,
+                    MediaStore.Video.Media.DURATION
+            )
+
+            val cursor = contentResolver.query(
+                    uri,
+                    mediaColumns,
+                    null,
+                    null,
+                    null
+            )
+            cursor.moveToFirst()
+            val createdDate = cursor.getLong(cursor.getColumnIndex(mediaColumns[0]))
+            val fileSize = cursor.getLong(cursor.getColumnIndex(mediaColumns[1]))
+            val duration = cursor.getLong(cursor.getColumnIndex(mediaColumns[2]))
+            cursor.close()
+
+            Media(uri.toString(), createdDate, fileSize, duration)
         }
     }
 
