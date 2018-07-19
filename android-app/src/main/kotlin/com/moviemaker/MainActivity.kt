@@ -9,6 +9,8 @@ import android.provider.MediaStore
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
+import com.jakewharton.rxbinding2.view.clicks
 import com.moviemaker.domain.Media
 import com.moviemaker.extension.isImageUri
 import com.moviemaker.extension.showMediaChooser
@@ -17,6 +19,8 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zhihu.matisse.Matisse
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import timber.log.Timber
@@ -28,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private val rxPermissions: RxPermissions by lazy {
         RxPermissions(this)
     }
+
+    private val compositeDisposable = CompositeDisposable()
 
     // views
     private val mediaGridView: MediaGridView by bindView(R.id.media_grid_view)
@@ -41,16 +47,37 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         toolbar.setTitle(R.string.app_name)
+        toolbar.inflateMenu(R.menu.main_menu)
 
-        addImageButton.setOnClickListener { _ ->
-            showMediaChooser(IMAGE_CHOOSER_REQUEST_CODE)
-        }
+        toolbar.menu.findItem(R.id.create_movie).isVisible = false
+
+        toolbar.itemClicks()
+                .subscribe { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.create_movie -> {
+                            //TODO: Do movie creation
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+                .addTo(compositeDisposable)
+
+        addImageButton
+                .clicks()
+                .subscribe {
+                    showMediaChooser(IMAGE_CHOOSER_REQUEST_CODE)
+                }
+                .addTo(compositeDisposable)
+
 
         rxPermissions.request(READ_PERMISSION, WRITE_PERMISSION)
                 .filter { true }
                 .subscribe {
                     mediaGridView.loadMediaList()
                 }
+                .addTo(compositeDisposable)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,13 +137,17 @@ class MainActivity : AppCompatActivity() {
         return Media(uri.toString(), createdDate, fileSize, duration)
     }
 
+    override fun onDestroy() {
+        compositeDisposable.dispose()
+        super.onDestroy()
+    }
 
     companion object {
 
         private const val IMAGE_CHOOSER_REQUEST_CODE = 1
 
         private const val READ_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE
-        
+
         private const val WRITE_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
     }
