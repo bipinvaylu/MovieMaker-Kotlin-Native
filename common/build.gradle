@@ -1,19 +1,28 @@
 apply from: "$rootDir/dependencies.gradle"
 
+buildscript {
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 apply plugin: 'kotlin-platform-common'
 
-sourceCompatibility = JavaVersion.VERSION_1_6
-targetCompatibility = JavaVersion.VERSION_1_6
+//sourceCompatibility = JavaVersion.VERSION_1_6
+//targetCompatibility = JavaVersion.VERSION_1_6
+
+repositories {
+    mavenCentral()
+}
 
 dependencies {
-
     implementation libraries.kotlin.common
-    implementation libraries.kotlin.stdlib
     implementation libraries.multiplatformSettings.common
 
-
-
-//    testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
-//    testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
 }
 

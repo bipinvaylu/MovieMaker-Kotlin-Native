@@ -17,26 +17,40 @@ group 'com.moviemaker'
 
 apply plugin: 'konan'
 
+konan.targets = ['iphone_sim']
 
 konanArtifacts {
-    //physical device
-    framework('KotlinMovieMaker_ios_phone', targets: ['ios_arm64']) {
+    framework('KotlinMovieMaker') {
         enableMultiplatform true
-        artifactName 'KotlinMovieMaker'
         dependencies {
-            artifactMyKotlinFramework_ios_arm64 libraries.multiplatformSettings.iosArm64
-        }
-    }
-
-    //simulator
-    framework('KotlinMovieMaker_ios_simulator', targets: ['ios_x64']) {
-        enableMultiplatform true
-        artifactName 'KotlinMovieMaker'
-        dependencies {
-            artifactMyKotlinFramework_ios_x64 libraries.multiplatformSettings.iosX64
+            artifactKotlinMovieMaker libraries.multiplatformSettings.iosX64
         }
     }
 }
+
+//konanArtifacts {
+//
+//    //simulator
+//    framework('KotlinMovieMaker_ios_simulator', targets: ['ios_x64']) {
+//        enableMultiplatform true
+//        artifactName 'KotlinMovieMaker'
+//        dependencies {
+//            artifactMyKotlinFramework_ios_x64 libraries.multiplatformSettings.iosX64
+//        }
+//    }
+
+
+//    FIX: Its not working
+//    //physical device
+//    framework('KotlinMovieMaker_ios_phone', targets: ['ios_arm64']) {
+//        enableMultiplatform true
+//        artifactName 'KotlinMovieMaker'
+//        dependencies {
+//            artifactMyKotlinFramework_ios_arm64 libraries.multiplatformSettings.iosArm64
+//        }
+//    }
+//
+//}
 
 
 dependencies {
