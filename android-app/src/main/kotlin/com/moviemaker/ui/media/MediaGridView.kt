@@ -21,6 +21,7 @@ import timber.log.Timber
 class MediaGridView : ConstraintLayout {
 
     // private members
+    private val selectedMedia = mutableListOf<Media>()
 
     // protected members
 

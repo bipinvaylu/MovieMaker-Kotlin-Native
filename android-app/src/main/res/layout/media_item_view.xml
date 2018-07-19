@@ -17,6 +17,14 @@
             app:aspectRatioWidth="16"
     />
 
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check_box_blank_24px"
+            android:layout_gravity="end|top"
+            android:tint="@color/material_color_white"
+    />
+
     <ImageView
             android:id="@+id/video_image_view"
             android:src="@drawable/ic_outline_videocam_24px"

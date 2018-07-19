@@ -5,7 +5,11 @@ import com.moviemaker.domain.Media
 import io.reactivex.functions.Consumer
 import timber.log.Timber
 
-class MediaController : EpoxyController() {
+class MediaController (
+        private val selectedMedia: Collection<Media>? = null,
+        private val clickListener: (Media) -> Any?,
+        private val longClickListener: (Media) -> Any?
+) : EpoxyController() {
 
     // private members
     private val _media = mutableListOf<Media>()
