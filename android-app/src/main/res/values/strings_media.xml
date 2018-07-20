@@ -3,5 +3,6 @@
 
     <string name="media_empty_title">Media library empty</string>
     <string name="media_empty_body">Add media using + button.</string>
+    <string name="create_movie">Create Movie</string>
 
 </resources>

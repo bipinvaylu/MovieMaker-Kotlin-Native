@@ -101,12 +101,13 @@ package com.moviemaker.domain
 data class Media(
         val path: String,
         val createdDate: Long,
-        val fileSize: Long
+        val fileSize: Long,
+        val duration: Long = 0L
 ) {
     val id: Int
         get() = arrayOf(
                 path.substringAfterLast("/").substringAfterLast("\\"),
-                (createdDate / 1000) * 1000, // Round to seconds to match resolution.
+                (createdDate / 1000) * 1000,
                 fileSize
         ).hashCode()
 

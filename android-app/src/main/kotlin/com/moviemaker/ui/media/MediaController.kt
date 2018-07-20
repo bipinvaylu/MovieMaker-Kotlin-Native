@@ -13,7 +13,7 @@ class MediaController : EpoxyController() {
     // public properties
     val media = Consumer<Collection<Media>> { media ->
         _media.clear()
-        _media.addAll(media.sortedBy { it.createdDate })
+        _media.addAll(media)
         Timber.d("Bipin - MediaController media: $_media")
         requestModelBuild()
     }

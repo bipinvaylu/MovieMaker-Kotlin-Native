@@ -4,8 +4,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="@dimen/material_increment_3x"
-        android:layout_height="@dimen/material_increment_2x"
-        android:background="@color/material_color_grey_100"
+        android:layout_height="@dimen/material_increment_1.5x"
+        android:background="@color/material_color_blue_400"
 >
 
     <com.moviemaker.widget.FixedAspectRatioImageView
@@ -17,4 +17,12 @@
             app:aspectRatioWidth="16"
     />
 
+    <ImageView
+            android:id="@+id/video_image_view"
+            android:src="@drawable/ic_outline_videocam_24px"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/material_baseline_grid_0.5x"
+            android:tint="@color/material_color_white"
+            android:layout_height="wrap_content"/>
 </com.moviemaker.ui.media.MediaItemView>

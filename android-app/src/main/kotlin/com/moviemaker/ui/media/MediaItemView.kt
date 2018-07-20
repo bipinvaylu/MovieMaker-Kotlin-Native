@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.airbnb.epoxy.EpoxyModel
@@ -21,6 +22,7 @@ class MediaItemView : FrameLayout {
 
     // views
     private val imageView: ImageView by bindView(R.id.image_view)
+    private val videoImageView: ImageView by bindView(R.id.video_image_view)
 
 
     // constructors
@@ -36,16 +38,17 @@ class MediaItemView : FrameLayout {
     // public functions
     fun bind(media: Media) {
         val mediaUri = Uri.parse(media.path)
+        videoImageView.visibility = if(media.isImage) View.GONE else View.VISIBLE
         if(media.isImage) {
             App.component.picasso()
                     .load(mediaUri)
                     .into(imageView)
             Timber.d("Bipin - ImageView width: ${imageView.width}, height: ${imageView.height}")
         } else {
-            val videoId = mediaUri.toString().split("/").last().toLong()
+            val videoId = mediaUri.lastPathSegment.toLong()
             //TODO: Find better way to set image width & height
             val width = App.component.context().resources.getDimensionPixelOffset(R.dimen.material_increment_3x)
-            val height = App.component.context().resources.getDimensionPixelOffset(R.dimen.material_increment_2x)
+            val height = App.component.context().resources.getDimensionPixelOffset(R.dimen.material_increment_1_5x)
             App.component.picasso().load(
                     ContentUris.withAppendedId(
                             MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
