@@ -70,7 +70,7 @@ class MediaGridView : ConstraintLayout {
     }
 
     // public functions
-    fun loadMediaList() {
+    fun loadMediaList(listener: ((mediaListSize: Int) -> Unit)? = null) {
         if (isLoadingMedia()) return
         showViews(progressBar)
         hideViews(emptyViewGroup, recyclerView)
@@ -87,12 +87,15 @@ class MediaGridView : ConstraintLayout {
                 hideViews(emptyViewGroup)
                 showViews(recyclerView)
             }
+            listener?.invoke(mediaList.size)
         }
     }
 
     private fun isLoadingMedia() = progressBar.visibility == View.VISIBLE
 
-    fun addMedia(media: Media) {
+    fun addMedia(media: Media,
+                 listener: ((mediaListSize: Int) -> Unit)? = null
+    ) {
         mediaList.add(media)
         val strMediaList = mediaListAdapter().toJson(mediaList.toList())
 //        Timber.d("Bipin - mediaList.size: ${mediaList.size}, strMediaList: $strMediaList")
@@ -106,6 +109,7 @@ class MediaGridView : ConstraintLayout {
             hideViews(emptyViewGroup)
             showViews(recyclerView)
         }
+        listener?.invoke(mediaList.size)
     }
 
 

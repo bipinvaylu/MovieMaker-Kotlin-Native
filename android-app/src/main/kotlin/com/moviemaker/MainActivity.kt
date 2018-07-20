@@ -75,7 +75,9 @@ class MainActivity : AppCompatActivity() {
         rxPermissions.request(READ_PERMISSION, WRITE_PERMISSION)
                 .filter { true }
                 .subscribe {
-                    mediaGridView.loadMediaList()
+                    mediaGridView.loadMediaList { mediaListSize ->
+                        showCreatMovieMenu(mediaListSize >= 2)
+                    }
                 }
                 .addTo(compositeDisposable)
     }
@@ -100,11 +102,20 @@ class MainActivity : AppCompatActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .doOnNext { media ->
-                        mediaGridView.addMedia(media)
                         mediaGridView.hideLoading()
+                        mediaGridView.addMedia(media) {mediaListSize ->
+                            showCreatMovieMenu(mediaListSize >= 2)
+                        }
+
                     }
                     .subscribe()
         }
+    }
+
+    private fun showCreatMovieMenu(visible: Boolean) {
+        toolbar.menu
+                .findItem(R.id.create_movie)
+                .isVisible = visible
     }
 
     private fun retrieveMediaDetail(uri: Uri): Media? {

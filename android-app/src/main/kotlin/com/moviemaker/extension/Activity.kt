@@ -20,13 +20,8 @@ fun Activity.showMediaChooser(requestCode: Int) {
 //    )
 //    startActivityForResult(chooser, requestCode)
     Matisse.from(this)
-            .choose(MimeType.ofAll())
+            .choose(MimeType.ofVideo())
             .countable(false)
-//            TODO: Fix camera crash
-//            .capture(true)
-//            .captureStrategy(
-//                    CaptureStrategy(true, "com.moviemaker.fileprovider")
-//            )
             .maxSelectable(10)
             .thumbnailScale(0.85f)
             .imageEngine(PicassoEngine())
