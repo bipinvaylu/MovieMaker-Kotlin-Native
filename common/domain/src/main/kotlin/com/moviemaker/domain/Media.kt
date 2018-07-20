@@ -9,7 +9,6 @@ sealed class Media {
             fileSize
         ).hashCode()
 
-
     abstract val path: String
     abstract val thmPath: String
     abstract val createdDate: Long

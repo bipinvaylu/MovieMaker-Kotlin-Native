@@ -15,6 +15,7 @@
 		8BB9D46A20ED7ABC003ADB9C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BB9D46820ED7ABC003ADB9C /* LaunchScreen.storyboard */; };
 		E353980E20EFE9C3005F4F8E /* KotlinMovieMaker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E353980D20EFE9C2005F4F8E /* KotlinMovieMaker.framework */; };
 		E353980F20EFE9C3005F4F8E /* KotlinMovieMaker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E353980D20EFE9C2005F4F8E /* KotlinMovieMaker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E36D243B2101232200BAF989 /* MediaDetasourceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36D243A2101232200BAF989 /* MediaDetasourceDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 		8BB9D46920ED7ABC003ADB9C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8BB9D46B20ED7ABC003ADB9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E353980D20EFE9C2005F4F8E /* KotlinMovieMaker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KotlinMovieMaker.framework; path = "../../common-ios/build/konan/bin/ios_x64/KotlinMovieMaker.framework"; sourceTree = "<group>"; };
+		E36D243A2101232200BAF989 /* MediaDetasourceDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaDetasourceDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 		8BB9D45B20ED7ABC003ADB9C /* MovieMaker */ = {
 			isa = PBXGroup;
 			children = (
+				E36D243A2101232200BAF989 /* MediaDetasourceDelegate.swift */,
 				8BB9D45C20ED7ABC003ADB9C /* AppDelegate.swift */,
 				8BB9D45E20ED7ABC003ADB9C /* ViewController.swift */,
 				8BB9D46020ED7ABC003ADB9C /* Main.storyboard */,
@@ -169,6 +172,7 @@
 			files = (
 				8BB9D45F20ED7ABC003ADB9C /* ViewController.swift in Sources */,
 				8BB9D46520ED7ABC003ADB9C /* MovieMaker.xcdatamodeld in Sources */,
+				E36D243B2101232200BAF989 /* MediaDetasourceDelegate.swift in Sources */,
 				8BB9D45D20ED7ABC003ADB9C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
