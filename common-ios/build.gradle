@@ -10,8 +10,8 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:$kotlin_native_version"
     }
-
 }
+
 
 group 'com.moviemaker'
 
@@ -20,10 +20,11 @@ apply plugin: 'konan'
 konan.targets = ['iphone_sim']
 
 konanArtifacts {
-    framework('KotlinMovieMaker') {
+    framework('KotlinMovieMaker', targets: ['iphone_sim']) {
         enableMultiplatform true
+        artifactName 'KotlinMovieMaker'
         dependencies {
-            artifactKotlinMovieMaker libraries.multiplatformSettings.iosX64
+            artifactKotlinMovieMaker "com.russhwolf:multiplatform-settings-ios_x64:0.1-alpha3"
         }
     }
 }
