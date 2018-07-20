@@ -1,6 +1,8 @@
 package com.moviemaker.extension
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.PicassoEngine
@@ -20,15 +22,19 @@ fun Activity.showMediaChooser(requestCode: Int) {
 //    )
 //    startActivityForResult(chooser, requestCode)
     Matisse.from(this)
-            .choose(MimeType.ofAll())
+            .choose(MimeType.ofVideo())
             .countable(false)
-//            TODO: Fix camera crash
-//            .capture(true)
-//            .captureStrategy(
-//                    CaptureStrategy(true, "com.moviemaker.fileprovider")
-//            )
             .maxSelectable(10)
             .thumbnailScale(0.85f)
             .imageEngine(PicassoEngine())
             .forResult(requestCode)
+}
+
+fun Activity.showVideo(filePath: String) {
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.setDataAndType(
+            Uri.parse(filePath),
+            "video/*"
+    )
+    startActivity(intent)
 }
