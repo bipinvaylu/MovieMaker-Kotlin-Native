@@ -99,6 +99,7 @@ package com.moviemaker.domain
 //}
 
 data class Media(
+        val uriString: String,
         val path: String,
         val createdDate: Long,
         val fileSize: Long,
@@ -106,11 +107,11 @@ data class Media(
 ) {
     val id: Int
         get() = arrayOf(
-                path.substringAfterLast("/").substringAfterLast("\\"),
+                uriString.substringAfterLast("/").substringAfterLast("\\"),
                 (createdDate / 1000) * 1000,
                 fileSize
         ).hashCode()
 
     val isImage: Boolean
-        get() = path.contains("images")
+        get() = uriString.contains("images")
 }

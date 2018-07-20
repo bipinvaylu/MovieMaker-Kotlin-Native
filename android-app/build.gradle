@@ -82,6 +82,7 @@ dependencies {
     implementation libraries.rxPermissions
     implementation libraries.rxKotlin
     implementation libraries.timber
+    implementation libraries.mp4parser
 
 
 //    testImplementation project(':testutils')

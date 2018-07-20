@@ -36,6 +36,7 @@ class MediaGridView : ConstraintLayout {
         MediaController()
     }
     private val mediaList = mutableListOf<Media>()
+
     private val getMediaList: GetMediaList by lazy {
         Timber.d("Bipin - getMediaList init called")
         GetMediaList(LocalMediaDataSource(App.component.prefsRepo()))
@@ -112,6 +113,7 @@ class MediaGridView : ConstraintLayout {
         listener?.invoke(mediaList.size)
     }
 
+    fun getMediaList() = mediaList.toList()
 
     private fun showViews(vararg views: View) {
         views.forEach {

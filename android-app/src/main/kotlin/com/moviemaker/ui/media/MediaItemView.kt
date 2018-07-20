@@ -37,7 +37,7 @@ class MediaItemView : FrameLayout {
 
     // public functions
     fun bind(media: Media) {
-        val mediaUri = Uri.parse(media.path)
+        val mediaUri = Uri.parse(media.uriString)
         videoImageView.visibility = if(media.isImage) View.GONE else View.VISIBLE
         if(media.isImage) {
             App.component.picasso()
