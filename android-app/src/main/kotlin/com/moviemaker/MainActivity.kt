@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.widget.Toast
 import com.coremedia.iso.IsoFile
 import com.coremedia.iso.boxes.MetaBox
 import com.googlecode.mp4parser.FileDataSourceImpl
@@ -190,6 +191,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun createMovie() {
+        Toast.makeText(this,R.string.creating_movie, Toast.LENGTH_LONG).show()
 //         FIX: way to dismiss loading indicator when there is empty list
 //        mediaGridView.showLoading()
         getMetaBoxVideos()
@@ -219,7 +221,6 @@ class MainActivity : AppCompatActivity() {
                             Environment.getExternalStoragePublicDirectory(
                                     Environment.DIRECTORY_MOVIES
                             ).absolutePath, "MM-${Date().time}.mp4")
-                    file.createNewFile()
                     val fileChannel = RandomAccessFile(file, "rw").channel
                     container.writeContainer(fileChannel)
                     fileChannel.close()
