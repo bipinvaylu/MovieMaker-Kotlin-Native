@@ -15,8 +15,14 @@ import com.moviemaker.domain.Media
 import com.moviemaker.interactor.GetMediaList
 import com.moviemaker.utils.mediaListAdapter
 import com.moviemaker.widget.recyclerview.SpacesItemDecoration
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import timber.log.Timber
+import java.io.File
 
 class MediaGridView : ConstraintLayout {
 
@@ -36,6 +42,7 @@ class MediaGridView : ConstraintLayout {
         MediaController()
     }
     private val mediaList = mutableListOf<Media>()
+    private val compositeDisposable = CompositeDisposable()
 
     private val getMediaList: GetMediaList by lazy {
         Timber.d("Bipin - getMediaList init called")
@@ -70,6 +77,11 @@ class MediaGridView : ConstraintLayout {
 
     }
 
+    override fun onDetachedFromWindow() {
+        compositeDisposable.clear()
+        super.onDetachedFromWindow()
+    }
+
     // public functions
     fun loadMediaList(listener: ((mediaListSize: Int) -> Unit)? = null) {
         if (isLoadingMedia()) return
@@ -77,18 +89,38 @@ class MediaGridView : ConstraintLayout {
         hideViews(emptyViewGroup, recyclerView)
         getMediaList.execute {
             Timber.d("Bipin - GetMediaList list: $it")
-            hideViews(progressBar)
-            mediaList.clear()
-            mediaList.addAll(it)
-            controller.media.accept(it)
-            if (mediaList.size == 0) {
-                showViews(emptyViewGroup)
-                hideViews(recyclerView)
-            } else {
-                hideViews(emptyViewGroup)
-                showViews(recyclerView)
+            syncMedia(it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        hideViews(progressBar)
+                        mediaList.clear()
+                        mediaList.addAll(it)
+                        controller.media.accept(it)
+                        if (mediaList.size == 0) {
+                            showViews(emptyViewGroup)
+                            hideViews(recyclerView)
+                        } else {
+                            hideViews(emptyViewGroup)
+                            showViews(recyclerView)
+                        }
+                        listener?.invoke(mediaList.size)
+                    }
+                    .addTo(compositeDisposable)
+        }
+
+    }
+
+    private fun syncMedia(currMediaList: List<Media>): Observable<List<Media>> {
+        return Observable.create<List<Media>> { emitter ->
+            val mediaList = mutableListOf<Media>()
+            currMediaList.forEach { media ->
+                val file = File(media.path)
+                if (file.exists()) {
+                    mediaList.add(media)
+                }
             }
-            listener?.invoke(mediaList.size)
+            emitter.onNext(mediaList)
         }
     }
 

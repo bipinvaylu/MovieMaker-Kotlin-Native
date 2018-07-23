@@ -219,6 +219,7 @@ class MainActivity : AppCompatActivity() {
                             Environment.getExternalStoragePublicDirectory(
                                     Environment.DIRECTORY_MOVIES
                             ).absolutePath, "MM-${Date().time}.mp4")
+                    file.createNewFile()
                     val fileChannel = RandomAccessFile(file, "rw").channel
                     container.writeContainer(fileChannel)
                     fileChannel.close()
