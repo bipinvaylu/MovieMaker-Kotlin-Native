@@ -42,20 +42,19 @@ class MediaItemView : FrameLayout {
         if(media.isImage) {
             App.component.picasso()
                     .load(mediaUri)
+                    .centerInside()
                     .into(imageView)
             Timber.d("Bipin - ImageView width: ${imageView.width}, height: ${imageView.height}")
         } else {
             val videoId = mediaUri.lastPathSegment.toLong()
-            //TODO: Find better way to set image width & height
-            val width = App.component.context().resources.getDimensionPixelOffset(R.dimen.material_increment_3x)
-            val height = App.component.context().resources.getDimensionPixelOffset(R.dimen.material_increment_1_5x)
             App.component.picasso().load(
                     ContentUris.withAppendedId(
                             MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                             videoId
                     )
             )
-                    .resize(width, height)
+                    .resize(800,800)
+                    .centerCrop()
                     .into(imageView)
 //            Observable.create<String> {emitter->
 //                val projection = arrayOf(MediaStore.Video.Media.DATA)
